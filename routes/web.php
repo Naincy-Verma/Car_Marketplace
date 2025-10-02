@@ -8,8 +8,15 @@ use App\Http\Controllers\DashboardController;
 //     return view('welcome');
 // });
 
-Route::view('/','pages.index');
-Route::view('index2','pages.index2');
+// Route::view('/','pages.index');
+Route::view('/','pages.index2');
+Route::view('/car/login','pages.login');
+Route::view('/car/dashboard','pages.seller');
+Route::view('/car/post-car','pages.post-car');
+Route::view('/car/profile','pages.edit-profile');
+Route::view('/car/search','pages.car-search');
+Route::view('/car/listing','pages.car-listing');
+Route::view('/car/detail','pages.car-detail');
 
 // Route::view('login','adminpages.login');
 
