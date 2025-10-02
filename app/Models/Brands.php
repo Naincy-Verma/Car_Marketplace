@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brands extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'logo',
+        'status'
+    ];
+
+
+        public $timestamps = true;
+        protected $table = 'brands';
 
     public function listings() {
         return $this->hasMany(Listing::class);

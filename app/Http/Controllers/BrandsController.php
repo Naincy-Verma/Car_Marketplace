@@ -12,7 +12,8 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        //
+        $brands = Brand::all();
+        return view('admin.brands.index', compact('brands'));
     }
 
     /**
@@ -20,7 +21,7 @@ class BrandsController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.brands.create');
     }
 
     /**
@@ -28,7 +29,24 @@ class BrandsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $request->validate([
+            'name' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $data = $request->only(['name', 'status']);
+
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/images/brand'), $filename);
+            $data['logo'] = 'assets/images/brand/' . $filename;
+        }
+
+        Brand::create($data);
+
+        return redirect()->route('brands.index')->with('success', 'Brand created successfully.');
     }
 
     /**
@@ -44,7 +62,7 @@ class BrandsController extends Controller
      */
     public function edit(Brands $brands)
     {
-        //
+        return view('admin.brands.edit', compact('brand'));
     }
 
     /**
@@ -52,7 +70,29 @@ class BrandsController extends Controller
      */
     public function update(Request $request, Brands $brands)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $data = $request->only(['name', 'status']);
+
+        if ($request->hasFile('logo')) {
+            // Delete old logo if exists
+            if ($brand->logo && file_exists(public_path($brand->logo))) {
+                unlink(public_path($brand->logo));
+            }
+
+            $file = $request->file('logo');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/images/brand'), $filename);
+            $data['logo'] = 'assets/images/brand/' . $filename;
+        }
+
+        $brand->update($data);
+
+        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
     }
 
     /**
@@ -60,6 +100,11 @@ class BrandsController extends Controller
      */
     public function destroy(Brands $brands)
     {
-        //
+        if ($brand->logo && file_exists(public_path($brand->logo))) {
+            unlink(public_path($brand->logo));
+        }
+
+        $brand->delete();
+        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
     }
 }
