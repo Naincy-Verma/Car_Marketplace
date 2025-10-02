@@ -1,41 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-
-@yield('partials/head')
+    @include('partials.head')
 
 <body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">
 
     <!-- ..::  header area start ::.. -->
-    @yield('partials/sidebar') 
+    @include('partials.sidebar')
     <!-- ..::  header area end ::.. -->
 
     <main class="dashboard-main">
 
         <!-- ..::  navbar start ::.. -->
-       @yield('partials/navbar')
+        @include('partials.navbar')
         <!-- ..::  navbar end ::.. -->
-        <div class="dashboard-main-body">
-            
-            <!-- ..::  breadcrumb  start ::.. -->
-            @yield('partials/breadcrumb') 
-            <!-- ..::  header area end ::.. -->
 
-            @yield('content') 
-        
+        <div class="dashboard-main-body">
+            <!-- ..::  breadcrumb  start ::.. -->
+            @include('partials.breadcrumb', ['title' => $title, 'subTitle' => $subTitle])
+            <!-- ..::  breadcrumb end ::.. -->
+
+            {{-- This is where page content will be injected --}}
+            @yield('content')
         </div>
+
         <!-- ..::  footer  start ::.. -->
-        @yiled('partials/footer') 
-        <!-- ..::  footer area end ::.. -->
+        @include('partials.footer')
+        <!-- ..::  footer end ::.. -->
 
     </main>
 
     <!-- ..::  scripts  start ::.. -->
-
-    @yield('partials/script')
-    
+    @include('partials.script')
     <!-- ..::  scripts  end ::.. -->
 
-    @yiled('script') 
-</body>
+    @yield('script')
 
+        <!-- SweetAlert CSS & JS -->
+<!-- Blade Template -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+Swal.fire({
+  icon: 'success',
+  title: 'Success!',
+  text: '{{ session('success') }}',
+});
+</script>
+@endif
+</body>
 </html>

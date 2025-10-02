@@ -2,38 +2,45 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?= $this->include('partials/head') ?>
+@include('partials/head')
 
 <body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">
 
     <section class="bg-white dark:bg-dark-2 flex flex-wrap min-h-[100vh]">
         <div class="lg:w-1/2 lg:block hidden">
             <div class="flex items-center flex-col h-full justify-center">
-                <img src="<?= base_url('assets/images/auth/auth-img.png') ?>" alt="">
+                <img src="{{asset('adminassets/images/auth/auth-img.png')}}" alt="">
             </div>
         </div>
         <div class="lg:w-1/2 py-8 px-6 flex flex-col justify-center">
             <div class="lg:max-w-[464px] mx-auto w-full">
                 <div>
-                    <a href="<?= route_to('index') ?>" class="mb-2.5 max-w-[290px]">
-                        <img src="<?= base_url('assets/images/logo.png') ?>" alt="">
+                    <a href="{{url('/')}}" class="mb-2.5 max-w-[290px]">
+                        <img src="{{asset('adminassets/images/logo.png')}}" alt="">
                     </a>
                     <h4 class="mb-3">Sign In to your Account</h4>
                     <p class="mb-8 text-secondary-light text-lg">Welcome back! please enter your detail</p>
                 </div>
-                <form action="#">
+                <form action="{{ route('admin.login.submit') }}" method="POST">
+                    @csrf
                     <div class="icon-field mb-4 relative">
                         <span class="absolute start-4 top-1/2 -translate-y-1/2 pointer-events-none flex text-xl">
                             <iconify-icon icon="mage:email"></iconify-icon>
                         </span>
-                        <input type="email" class="form-control h-[56px] ps-11 border-neutral-300 bg-neutral-50 dark:bg-dark-2 rounded-xl" placeholder="Email">
+                        <input type="email" name="email"  value="{{ old('email') }}"  class="form-control h-[56px] ps-11 border-neutral-300 bg-neutral-50 dark:bg-dark-2 rounded-xl" placeholder="Email">
+                        @error('email')
+                            <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="relative mb-5">
                         <div class="icon-field">
                             <span class="absolute start-4 top-1/2 -translate-y-1/2 pointer-events-none flex text-xl">
                                 <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
                             </span>
-                            <input type="password" class="form-control h-[56px] ps-11 border-neutral-300 bg-neutral-50 dark:bg-dark-2 rounded-xl" id="your-password" placeholder="Password">
+                            <input type="password" name="password" class="form-control h-[56px] ps-11 border-neutral-300 bg-neutral-50 dark:bg-dark-2 rounded-xl" id="your-password" placeholder="Password">
+                            @error('password')
+                                <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                         <span class="toggle-password ri-eye-line cursor-pointer absolute end-0 top-1/2 -translate-y-1/2 me-4 text-secondary-light" data-toggle="#your-password"></span>
                     </div>
@@ -47,7 +54,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary justify-center text-sm btn-sm px-3 py-4 w-full rounded-xl mt-8"> Sign In</button>
+                    <button type="submit" class="btn btn-primary justify-center text-sm btn-sm px-3 py-4 w-full rounded-xl mt-8"> Login</button>
 
                     <div class="mt-8 center-border-horizontal text-center relative before:absolute before:w-full before:h-[1px] before:top-1/2 before:-translate-y-1/2 before:bg-neutral-300 before:start-0">
                         <span class="bg-white dark:bg-dark-2 z-[2] relative px-4">Or sign in with</span>
@@ -62,16 +69,14 @@
                             Google
                         </button>
                     </div>
-                    <div class="mt-8 text-center text-sm">
-                        <p class="mb-0">Don't have an account? <a href="<?= route_to('signup') ?>" class="text-primary-600 font-semibold hover:underline">Sign Up</a></p>
-                    </div>
+                    
 
                 </form>
             </div>
         </div>
     </section>
 
-    <?= $this->section('script'); ?>
+    @section('script')
         <script>
             // ================== Password Show Hide Js Start ==========
             function initializePasswordToggle(toggleSelector) {
@@ -89,9 +94,9 @@
             initializePasswordToggle(".toggle-password");
             // ========================= Password Show Hide Js End ===========================
         </script>
-    <?= $this->endSection(); ?>
+    @endSection()
                     
-<?= $this->include('partials/script') ?>
+@include('partials/script')
 
 
 </body>
