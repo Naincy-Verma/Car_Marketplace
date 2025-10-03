@@ -5,19 +5,10 @@
  
 
 <body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">
-
-    <section class="bg-white dark:bg-dark-2 flex flex-wrap min-h-[100vh]">
-        <div class="lg:w-1/2 lg:block hidden">
-            <div class="flex items-center flex-col h-full justify-center">
-                <img src="{{asset('adminassets/images/auth/auth-img.png')}}" alt="">
-            </div>
-        </div>
-        <div class="lg:w-1/2 py-8 px-6 flex flex-col justify-center">
-            <div class="lg:max-w-[464px] mx-auto w-full">
+   <section class="bg-white dark:bg-dark-2 flex flex-wrap min-h-[100vh]">
+        <div class="w-full py-8 px-6 flex flex-col justify-center items-center">
+            <div class="lg:max-w-[464px] mx-auto w-full border p-5">
                 <div>
-                    <a href="{{url('/')}}" class="mb-2.5 max-w-[290px]">
-                        <img src="{{asset('adminassets/images/logo.png')}}" alt="">
-                    </a>
                     <h4 class="mb-3">Sign In to your Account</h4>
                     <p class="mb-8 text-secondary-light text-lg">Welcome back! please enter your detail</p>
                 </div>
@@ -62,7 +53,7 @@
                     <div class="mt-8 flex items-center gap-3">
                         <button type="button" class="font-semibold text-neutral-600 dark:text-neutral-200 py-4 px-6 w-1/2 border rounded-xl text-base flex items-center justify-center gap-3 line-height-1 hover:bg-primary-50">
                             <iconify-icon icon="ic:baseline-facebook" class="text-primary-600 text-xl line-height-1"></iconify-icon>
-                            Google
+                            Facebook
                         </button>
                         <button type="button" class="font-semibold text-neutral-600 dark:text-neutral-200 py-4 px-6 w-1/2 border rounded-xl text-base flex items-center justify-center gap-3 line-height-1 hover:bg-primary-50">
                             <iconify-icon icon="logos:google-icon" class="text-primary-600 text-xl line-height-1"></iconify-icon>
