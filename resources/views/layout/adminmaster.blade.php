@@ -16,7 +16,7 @@
 
         <div class="dashboard-main-body">
             <!-- ..::  breadcrumb  start ::.. -->
-            @include('partials.breadcrumb', ['title' => $title, 'subTitle' => $subTitle])
+            {{-- @include('partials.breadcrumb', ['title' => $title, 'subTitle' => $subTitle]) --}}
             <!-- ..::  breadcrumb end ::.. -->
 
             {{-- This is where page content will be injected --}}

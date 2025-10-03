@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->enum('user_type', ['Individual', 'Broker', 'Dealer']);
+            $table->string('phone');
+            $table->string('whatsapp')->nullable();
+            $table->string('telegram')->nullable();
+            $table->enum('status', ['Active', 'Suspended', 'Pending'])->default('pending');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
