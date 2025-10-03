@@ -24,8 +24,13 @@ Route::view('/car/detail', 'pages.car-detail');
 // Route::view('login','adminpages.login');
 
 // Login & Logout
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/login', [LoginController::class, 'login'])->name('admin.login.submit');
+
+// Show login form
+Route::get('/admin/login', [LoginController::class, 'showLoginForm'])
+    ->name('admin.login');
+// Handle login submission
+Route::post('/admin/login', [LoginController::class, 'login'])
+    ->name('admin.login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 /*
@@ -62,5 +67,13 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/listings/{id}/edit', [ListingController::class, 'edit'])->name('listings.edit');
         Route::put('/listings/{id}', [ListingController::class, 'update'])->name('listings.update');
         Route::delete('/listings/{id}', [ListingController::class, 'destroy'])->name('listings.destroy');
+
+        //User Routes
+        Route::get('/users', [UserController::class,'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class,'create'])->name('users.create');
+        Route::post('/users', [UserController::class,'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [UserController::class,'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class,'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class,'destroy'])->name('users.destroy');
     });
 });

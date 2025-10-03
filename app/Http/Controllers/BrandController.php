@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brands;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
-class BrandsController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $brands = Brands::all();
+        $brands = Brand::all();
         return view('adminpages.brand.index', compact('brands'));
     }
 

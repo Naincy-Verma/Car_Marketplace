@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Listing;
 use App\Models\Category;
-use App\Models\Brands;
+use App\Models\Brand;
 
 class ListingController extends Controller
 {
@@ -18,7 +18,7 @@ class ListingController extends Controller
     public function create()
     {
         $categories = Category::where('status','active')->get();
-        $brands = Brands::where('status','active')->get();
+        $brands = Brand::where('status','active')->get();
         return view('adminpages.listing.create', compact('categories','brands'));
     }
 
@@ -46,7 +46,7 @@ class ListingController extends Controller
     public function edit(Listing $listing)
     {
         $categories = Category::where('status','active')->get();
-        $brands = Brands::where('status','active')->get();
+        $brands = Brand::where('status','active')->get();
         return view('adminpages.listing.edit', compact('listing','categories','brands'));
     }
 

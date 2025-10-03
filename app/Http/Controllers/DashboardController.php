@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Brand;
+use App\Models\Listing;
 
 class DashboardController extends Controller
 {
-    //
-    public function index(){
-        // return view('adminpages.dashboard');
-         $title = "Dashboard";
-    $subTitle = "Home";
-    return view('adminpages.dashboard', compact('title', 'subTitle'));
+    // Show admin dashboard
+    public function index()
+    {
+        // Fetch statistics
+        $totalBrands      =  Brand::count();
+        $totalListings     = Listing::count();
+
+        return view('adminpages.dashboard', compact(
+            'totalBrands',
+            'totalListings',
+        ));
     }
 }

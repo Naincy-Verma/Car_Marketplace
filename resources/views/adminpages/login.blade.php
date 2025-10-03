@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-@include('partials/head')
+ 
 
 <body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">
 

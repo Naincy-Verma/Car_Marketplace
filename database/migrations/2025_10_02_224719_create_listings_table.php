@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('user_id')->constrained('customers')->onDelete('cascade'); // FK to customers table
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // FK to customers table
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->string('model');
