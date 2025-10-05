@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('user_type', ['Individual', 'Broker', 'Dealer']);
+             $table->string('business_name');
             $table->string('phone');
-            $table->string('whatsapp')->nullable();
-            $table->string('telegram')->nullable();
-            $table->enum('status', ['Active', 'Suspended', 'Pending'])->default('pending');
-            $table->rememberToken();
+            $table->string('whatsapp_no')->nullable();
+            $table->string('telegram_username')->nullable();
+            $table->enum('status', ['active', 'suspended', 'pending'])->default('pending');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('users');
     }
 };

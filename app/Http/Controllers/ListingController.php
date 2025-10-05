@@ -6,59 +6,122 @@ use Illuminate\Http\Request;
 use App\Models\Listing;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\CarModel;
+use App\Models\Year;
+use App\Models\FuelType;
+use App\Models\TransmissionType;
+use App\Models\Location;
+use App\Models\ListingMedia;
 
 class ListingController extends Controller
 {
+    /**
+     * Display all listings (for admin or frontend filtering)
+     */
     public function index()
     {
-        $listings = Listing::with(['user','category','brand'])->get();
-        return view('adminpages.listing.index', compact('listings'));
+        // Admin view: all listings
+        $listings = Listing::with('media', 'category', 'brand', 'model', 'fuelType', 'transmissionType', 'location')->get();
+        return view('listings.index', compact('listings'));
     }
 
+    /**
+     * Show form to create new listing
+     */
     public function create()
     {
-        $categories = Category::where('status','active')->get();
-        $brands = Brand::where('status','active')->get();
-        return view('adminpages.listing.create', compact('categories','brands'));
+        // Pass categories, brands, models etc. to the view
+        return view('listings.create', [
+            'categories' => Category::all(),
+            'brands' => Brand::all(),
+            'models' => CarModel::all(),
+            'years' => Year::all(),
+            'fuelTypes' => FuelType::all(),
+            'transmissions' => TransmissionType::all(),
+            'locations' => Location::all(),
+        ]);
     }
 
+    /**
+     * Store a new listing
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id'=>'required|exists:customers,id',
-            'category_id'=>'required|exists:categories,id',
-            'brand_id'=>'required|exists:brands,id',
-            'model'=>'required|string',
-            'year'=>'required|digits:4|integer',
-            'price'=>'required|numeric',
-            'mileage'=>'required|string',
-            'location'=>'required|string',
-            'fuel_type'=>'required|string',
-            'transmission'=>'required|string',
-            'condition'=>'required|in:new,used',
-            'description'=>'required|string',
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
+            'model_id' => 'required|exists:models,id',
+            'years_id' => 'required|exists:years,id',
+            'fuel_type_id' => 'required|exists:fuel_types,id',
+            'transmission_type_id' => 'required|exists:transmission_types,id',
+            'location_id' => 'required|exists:locations,id',
+            'mileage' => 'required|string',
+            'price' => 'required|numeric',
+            'condition' => 'required|in:new,used',
+            'description' => 'required|string',
+            'listing_type' => 'nullable|in:featured,urgent',
+            'status' => 'nullable|in:active,pending,rejected',
+            'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov|max:10240', // 10MB max
         ]);
 
-        Listing::create($request->all());
-        return redirect()->route('listings.index')->with('success','Listing created successfully.');
+        $listing = Listing::create([
+            'category_id' => $validated['category_id'],
+            'brand_id' => $validated['brand_id'],
+            'model_id' => $validated['model_id'],
+            'years_id' => $validated['years_id'],
+            'fuel_type_id' => $validated['fuel_type_id'],
+            'transmission_type_id' => $validated['transmission_type_id'],
+            'location_id' => $validated['location_id'],
+            'mileage' => $validated['mileage'],
+            'price' => $validated['price'],
+            'condition' => $validated['condition'],
+            'description' => $validated['description'],
+            'listing_type' => $validated['listing_type'] ?? 'featured',
+            'status' => 'pending', // all new listings are pending approval
+        ]);
+
+        // Handle uploaded media
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $file) {
+                $type = in_array($file->extension(), ['mp4', 'mov']) ? 'video' : 'image';
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('assets/images/listings'), $filename);
+
+                ListingMedia::create([
+                    'listing_id' => $listing->id,
+                    'type' => $type,
+                    'file' => $filename,
+                ]);
+            }
+        }
+
+        return redirect()->route('listings.index')->with('success', 'Listing submitted successfully and is pending approval.');
     }
 
-    public function edit(Listing $listing)
+    /**
+     * Show single listing
+     */
+    public function show(Listing $listing)
     {
-        $categories = Category::where('status','active')->get();
-        $brands = Brand::where('status','active')->get();
-        return view('adminpages.listing.edit', compact('listing','categories','brands'));
+        $listing->load('media', 'category', 'brand', 'model', 'fuelType', 'transmissionType', 'location');
+        return view('listings.show', compact('listing'));
     }
 
-    public function update(Request $request, Listing $listing)
+    /**
+     * Approve a listing (admin)
+     */
+    public function approve(Listing $listing)
     {
-        $listing->update($request->all());
-        return redirect()->route('listings.index')->with('success','Listing updated successfully.');
+        $listing->update(['status' => 'active']);
+        return back()->with('success', 'Listing approved.');
     }
 
-    public function destroy(Listing $listing)
+    /**
+     * Reject a listing (admin)
+     */
+    public function reject(Listing $listing)
     {
-        $listing->delete();
-        return redirect()->route('listings.index')->with('success','Listing deleted successfully.');
+        $listing->update(['status' => 'rejected']);
+        return back()->with('success', 'Listing rejected.');
     }
 }

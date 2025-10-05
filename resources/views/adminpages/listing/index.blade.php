@@ -1,58 +1,69 @@
 @extends('layout.adminmaster')
+@section('title', 'Listings')
 
 @section('content')
-<div class="p-6">
-    <h2 class="text-xl font-bold mb-4">Car Listings</h2>
-
-    @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-2 rounded mb-3">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <table class="w-full border border-gray-300 rounded-md">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="p-2 border">#</th>
-                <th class="p-2 border">User</th>
-                <th class="p-2 border">Category</th>
-                <th class="p-2 border">Brand</th>
-                <th class="p-2 border">Model</th>
-                <th class="p-2 border">Year</th>
-                <th class="p-2 border">Price</th>
-                <th class="p-2 border">Status</th>
-                <th class="p-2 border">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($listings as $listing)
-                <tr>
-                    <td class="p-2 border">{{ $listing->id }}</td>
-                    <td class="p-2 border">{{ $listing->user->name }}</td>
-                    <td class="p-2 border">{{ $listing->category->name }}</td>
-                    <td class="p-2 border">{{ $listing->brand->name }}</td>
-                    <td class="p-2 border">{{ $listing->model }}</td>
-                    <td class="p-2 border">{{ $listing->year }}</td>
-                    <td class="p-2 border">₹{{ number_format($listing->price,2) }}</td>
-                    <td class="p-2 border">
-                        <span class="px-2 py-1 rounded 
-                            {{ $listing->status == 'active' ? 'bg-green-200 text-green-700' : 
-                               ($listing->status == 'pending' ? 'bg-yellow-200 text-yellow-700' : 'bg-red-200 text-red-700') }}">
-                            {{ ucfirst($listing->status) }}
-                        </span>
-                    </td>
-                    <td class="p-2 border">
-                        <a href="{{ route('listings.edit', $listing->id) }}" class="text-blue-600 mr-2">Edit</a>
-                        <form action="{{ route('listings.destroy', $listing->id) }}" method="POST" class="inline-block">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-red-600" onclick="return confirm('Delete this listing?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="9" class="p-2 text-center">No listings found</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+<div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">Car Listings</h1>
+    <a href="{{ route('listings.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-lg">
+        + Add Listing
+    </a>
 </div>
+
+<table class="w-full border-collapse border border-gray-300">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="border px-4 py-2">ID</th>
+            <th class="border px-4 py-2">Brand</th>
+            <th class="border px-4 py-2">Model</th>
+            <th class="border px-4 py-2">Price</th>
+            <th class="border px-4 py-2">Year</th>
+            <th class="border px-4 py-2">Fuel</th>
+            <th class="border px-4 py-2">Location</th>
+            <th class="border px-4 py-2">Condition</th>
+            <th class="border px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($listings as $listing)
+        <tr class="hover:bg-gray-50">
+            <td class="border px-4 py-2">{{ $listing->id }}</td>
+            <td class="border px-4 py-2">{{ $listing->brand->name ?? '-' }}</td>
+            <td class="border px-4 py-2">{{ $listing->model->name ?? '-' }}</td>
+            <td class="border px-4 py-2">{{ $listing->price ? '₹'.number_format($listing->price) : '-' }}</td>
+            <td class="border px-4 py-2">{{ $listing->year->year ?? '-' }}</td>
+            <td class="border px-4 py-2">{{ $listing->fuelType->name ?? '-' }}</td>
+            <td class="border px-4 py-2">{{ $listing->location->name ?? '-' }}</td>
+            <td class="border px-4 py-2 capitalize">{{ $listing->condition ?? '-' }}</td>
+            <td class="border px-4 py-2 flex gap-2 justify-center">
+
+                <!-- Edit Icon -->
+                <a href="{{ route('listings.edit', $listing->id) }}" 
+                    class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <!-- View Icon -->
+                <a href="{{ route('listings.show', $listing->id) }}" 
+                    class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" 
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M2.458 12C3.732 7.943 7.523 5 12 5
+                        c4.477 0 8.268 2.943 9.542 7
+                        -1.274 4.057-5.065 7-9.542 7
+                        -4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                </a>
+
+                <!-- Delete Icon -->
+                <button 
+                    onclick="openDeleteModal('listings', {{ $listing->id }})"
+                    class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 @endsection

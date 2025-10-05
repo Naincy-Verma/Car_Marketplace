@@ -1,27 +1,35 @@
 @extends('layout.adminmaster')
 
 @section('content')
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Add Brand</h2>
+<div class="p-6 max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Add New Brand</h1>
 
-    <form action="{{ route('brands.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    @if ($errors->any())
+        <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('brands.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow">
         @csrf
-        <div>
-            <label class="block">Name</label>
-            <input type="text" name="name" class="w-full border rounded p-2" required>
+
+        <div class="mb-4">
+            <label class="block font-semibold text-gray-700 mb-2">Brand Name</label>
+            <input type="text" name="name" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400" placeholder="Enter brand name" required>
         </div>
-        <div>
-            <label class="block">Logo</label>
-            <input type="file" name="logo" class="w-full border rounded p-2">
+
+        <div class="mb-4">
+            <label class="block font-semibold text-gray-700 mb-2">Brand Image</label>
+            <input type="file" name="image" accept="image/*" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400" required>
         </div>
-        <div>
-            <label class="block">Status</label>
-            <select name="status" class="w-full border rounded p-2">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
-        </div>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow">
+            Save Brand
+        </button>
     </form>
 </div>
 @endsection

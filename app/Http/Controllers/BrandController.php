@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Brand;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Brand;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class BrandController extends Controller
 {
@@ -21,7 +24,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-         return view('adminpages.brand.create');
+        return view('adminpages.brand.create');
     }
 
     /**
@@ -29,82 +32,81 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'status' => 'required|in:active,inactive',
+            'slug' => 'required|string|max:255|unique:brands,slug',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->only(['name', 'status']);
-
-        if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('assets/images/brand'), $filename);
-            $data['logo'] = 'assets/images/brand/' . $filename;
+        // Upload image
+        if ($request->hasFile('image')) {
+            $imageName = time().'_'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('assets/images/brand'), $imageName);
         }
 
-        Brand::create($data);
+        Brand::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->slug),
+            'image' => $imageName ?? null,
+        ]);
 
-        return redirect()->route('brands.index')->with('success', 'Brand created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Brands $brands)
-    {
-        //
+        return redirect()->route('brand.index')->with('success', 'Brand added successfully.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Brands $brands)
+    public function edit($id)
     {
+        $brand = Brand::findOrFail($id);
         return view('adminpages.brand.edit', compact('brand'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Brands $brands)
+    public function update(Request $request, $id)
     {
+        $brand = Brand::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'status' => 'required|in:active,inactive',
+            'slug' => 'required|string|max:255|unique:brands,slug,'.$brand->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->only(['name', 'status']);
-
-        if ($request->hasFile('logo')) {
-            // Delete old logo if exists
-            if ($brand->logo && file_exists(public_path($brand->logo))) {
-                unlink(public_path($brand->logo));
+        // Upload new image if exists
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($brand->image && File::exists(public_path('assets/images/brand/'.$brand->image))) {
+                File::delete(public_path('assets/images/brand/'.$brand->image));
             }
 
-            $file = $request->file('logo');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('assets/images/brand'), $filename);
-            $data['logo'] = 'assets/images/brand/' . $filename;
+            $imageName = time().'_'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('assets/images/brand'), $imageName);
+            $brand->image = $imageName;
         }
 
-        $brand->update($data);
+        $brand->name = $request->name;
+        $brand->slug = Str::slug($request->slug);
+        $brand->save();
 
-        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
+        return redirect()->route('brand.index')->with('success', 'Brand updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Brands $brands)
+    public function destroy($id)
     {
-        if ($brand->logo && file_exists(public_path($brand->logo))) {
-            unlink(public_path($brand->logo));
+        $brand = Brand::findOrFail($id);
+
+        // Delete image
+        if ($brand->image && File::exists(public_path('assets/images/brand/'.$brand->image))) {
+            File::delete(public_path('assets/images/brand/'.$brand->image));
         }
 
         $brand->delete();
-        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
+        return redirect()->route('brand.index')->with('success', 'Brand deleted successfully.');
     }
 }

@@ -1,115 +1,131 @@
 @extends('layout.adminmaster')
+@section('title', 'Edit Listing')
 
 @section('content')
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Edit Listing</h2>
+<h1 class="text-2xl font-bold mb-4">Edit Car Listing</h1>
 
-    <form action="{{ route('listings.update', $listing->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-        @csrf @method('PUT')
+<form action="{{ route('listings.update', $listing->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    @csrf
+    @method('PUT')
 
-        <div>
-            <label class="block">Customer</label>
-            <select name="user_id" class="w-full border rounded p-2" required>
-                @foreach($customers as $customer)
-                    <option value="{{ $customer->id }}" {{ $listing->user_id == $customer->id ? 'selected' : '' }}>
-                        {{ $customer->name }} ({{ $customer->user_type }})
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    {{-- Category --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Category:</label>
+        <select name="category_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($categories as $cat)
+                <option value="{{ $cat->id }}" @if($listing->category_id == $cat->id) selected @endif>{{ $cat->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Category</label>
-            <select name="category_id" class="w-full border rounded p-2" required>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ $listing->category_id == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    {{-- Brand --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Brand:</label>
+        <select name="brand_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($brands as $brand)
+                <option value="{{ $brand->id }}" @if($listing->brand_id == $brand->id) selected @endif>{{ $brand->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Brand</label>
-            <select name="brand_id" class="w-full border rounded p-2" required>
-                @foreach($brands as $brand)
-                    <option value="{{ $brand->id }}" {{ $listing->brand_id == $brand->id ? 'selected' : '' }}>
-                        {{ $brand->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    {{-- Model --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Model:</label>
+        <select name="model_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($models as $model)
+                <option value="{{ $model->id }}" @if($listing->model_id == $model->id) selected @endif>{{ $model->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Car Model</label>
-            <input type="text" name="model" class="w-full border rounded p-2" value="{{ $listing->model }}" required>
-        </div>
+    {{-- Year --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Year:</label>
+        <select name="years_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($years as $year)
+                <option value="{{ $year->id }}" @if($listing->years_id == $year->id) selected @endif>{{ $year->year }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Year</label>
-            <input type="number" name="year" min="1900" max="{{ date('Y') }}" class="w-full border rounded p-2" value="{{ $listing->year }}" required>
-        </div>
+    {{-- Fuel Type --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Fuel Type:</label>
+        <select name="fuel_type_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($fuel_types as $fuel)
+                <option value="{{ $fuel->id }}" @if($listing->fuel_type_id == $fuel->id) selected @endif>{{ $fuel->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Price</label>
-            <input type="number" step="0.01" name="price" class="w-full border rounded p-2" value="{{ $listing->price }}" required>
-        </div>
+    {{-- Transmission --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Transmission:</label>
+        <select name="transmission_type_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($transmissions as $trans)
+                <option value="{{ $trans->id }}" @if($listing->transmission_type_id == $trans->id) selected @endif>{{ $trans->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Mileage</label>
-            <input type="text" name="mileage" class="w-full border rounded p-2" value="{{ $listing->mileage }}">
-        </div>
+    {{-- Location --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Location:</label>
+        <select name="location_id" class="border p-2 rounded w-full md:w-1/2">
+            @foreach($locations as $loc)
+                <option value="{{ $loc->id }}" @if($listing->location_id == $loc->id) selected @endif>{{ $loc->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Location</label>
-            <input type="text" name="location" class="w-full border rounded p-2" value="{{ $listing->location }}">
-        </div>
+    {{-- Mileage --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Mileage:</label>
+        <input type="text" name="mileage" value="{{ $listing->mileage }}" class="border p-2 rounded w-full md:w-1/2">
+    </div>
 
-        <div>
-            <label class="block">Fuel Type</label>
-            <select name="fuel_type" class="w-full border rounded p-2">
-                <option value="Petrol" {{ $listing->fuel_type == 'Petrol' ? 'selected' : '' }}>Petrol</option>
-                <option value="Diesel" {{ $listing->fuel_type == 'Diesel' ? 'selected' : '' }}>Diesel</option>
-                <option value="CNG" {{ $listing->fuel_type == 'CNG' ? 'selected' : '' }}>CNG</option>
-                <option value="Electric" {{ $listing->fuel_type == 'Electric' ? 'selected' : '' }}>Electric</option>
-            </select>
-        </div>
+    {{-- Price --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Price:</label>
+        <input type="number" step="0.01" name="price" value="{{ $listing->price }}" class="border p-2 rounded w-full md:w-1/2">
+    </div>
 
-        <div>
-            <label class="block">Transmission</label>
-            <select name="transmission" class="w-full border rounded p-2">
-                <option value="Automatic" {{ $listing->transmission == 'Automatic' ? 'selected' : '' }}>Automatic</option>
-                <option value="Manual" {{ $listing->transmission == 'Manual' ? 'selected' : '' }}>Manual</option>
-            </select>
-        </div>
+    {{-- Condition --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Condition:</label>
+        <select name="condition" class="border p-2 rounded w-full md:w-1/2">
+            <option value="new" @if($listing->condition == 'new') selected @endif>New</option>
+            <option value="used" @if($listing->condition == 'used') selected @endif>Used</option>
+        </select>
+    </div>
 
-        <div>
-            <label class="block">Condition</label>
-            <select name="condition" class="w-full border rounded p-2">
-                <option value="new" {{ $listing->condition == 'new' ? 'selected' : '' }}>New</option>
-                <option value="used" {{ $listing->condition == 'used' ? 'selected' : '' }}>Used</option>
-            </select>
-        </div>
+    {{-- Description --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Description:</label>
+        <textarea name="description" rows="4" class="border p-2 rounded w-full md:w-1/2">{{ $listing->description }}</textarea>
+    </div>
 
-        <div>
-            <label class="block">Description</label>
-            <textarea name="description" class="w-full border rounded p-2">{{ $listing->description }}</textarea>
-        </div>
+    {{-- Listing Type --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Listing Type:</label>
+        <select name="listing_type" class="border p-2 rounded w-full md:w-1/2">
+            <option value="featured" @if($listing->listing_type == 'featured') selected @endif>Featured</option>
+            <option value="urgent" @if($listing->listing_type == 'urgent') selected @endif>Urgent</option>
+        </select>
+    </div>
 
-        <div>
-            <label><input type="checkbox" name="is_featured" value="1" {{ $listing->is_featured ? 'checked' : '' }}> Featured Listing</label>
-        </div>
+    {{-- Replace Photos --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Photos:</label>
+        <input type="file" name="photos[]" multiple class="border p-2 rounded w-full md:w-1/2">
+    </div>
 
-        <div>
-            <label class="block">Status</label>
-            <select name="status" class="w-full border rounded p-2">
-                <option value="active" {{ $listing->status == 'active' ? 'selected' : '' }}>Active</option>
-                <option value="pending" {{ $listing->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="rejected" {{ $listing->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-            </select>
-        </div>
+    {{-- Video URL --}}
+    <div class="flex flex-col md:flex-row gap-4 items-center">
+        <label class="w-32 font-semibold">Video URL:</label>
+        <input type="text" name="video_url" value="{{ $listing->video_url }}" class="border p-2 rounded w-full md:w-1/2">
+    </div>
 
-        <button class="bg-blue-600 text-white px-4 py-2 rounded">Update Listing</button>
-    </form>
-</div>
-@endsectiona
+    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 mt-4 rounded-md text-lg w-[120px]">Update</button>
+</form>
+@endsection

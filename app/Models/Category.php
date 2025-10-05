@@ -8,14 +8,16 @@ class Category extends Model
 {
     protected $fillable = [
         'name',
-        'description',
-        'status'
+        'image' ,
+        'slug'
 ];
 
         public $timestamps = true;
         protected $table = 'categories';
 
-    public function listings() {
-        return $this->hasMany(Listing::class);
+    // Relationship: One Category has many Listings
+    public function listings()
+    {
+        return $this->hasMany(Listing::class, 'category_id', 'id');
     }
 }

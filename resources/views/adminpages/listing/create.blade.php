@@ -1,102 +1,150 @@
 @extends('layout.adminmaster')
+@section('title', 'Add Listing')
 
 @section('content')
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Add Listing</h2>
+<h1 class="text-2xl font-bold mb-4">Add Car Listing</h1>
 
-    <form action="{{ route('listings.store') }}" method="POST" class="space-y-4">
-        @csrf
+<form action="{{ route('listings.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    @csrf
 
-        <!-- User -->
-        <div>
-            <label class="block">User</label>
-            <select name="user_id" class="w-full border rounded p-2" required>
-                <option value="">Select User</option>
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->user_type }})</option>
-                @endforeach
-            </select>
-        </div>
+    {{-- Category --}}
+    <div>
+        <label class="block mb-1 font-semibold">Category</label>
+        <select name="category_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Category</option>
+            @foreach($categories as $cat)
+                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+            @endforeach
+        </select>
+        @error('category_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <!-- Category -->
-        <div>
-            <label class="block">Category</label>
-            <select name="category_id" class="w-full border rounded p-2" required>
-                <option value="">Select Category</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
+    {{-- Brand --}}
+    <div>
+        <label class="block mb-1 font-semibold">Brand</label>
+        <select name="brand_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Brand</option>
+            @foreach($brands as $brand)
+                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+            @endforeach
+        </select>
+        @error('brand_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <!-- Brand -->
-        <div>
-            <label class="block">Brand</label>
-            <select name="brand_id" class="w-full border rounded p-2" required>
-                <option value="">Select Brand</option>
-                @foreach($brands as $brand)
-                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                @endforeach
-            </select>
-        </div>
+    {{-- Model --}}
+    <div>
+        <label class="block mb-1 font-semibold">Model</label>
+        <select name="model_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Model</option>
+            @foreach($models as $model)
+                <option value="{{ $model->id }}">{{ $model->name }}</option>
+            @endforeach
+        </select>
+        @error('model_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Model</label>
-            <input type="text" name="model" class="w-full border rounded p-2" required>
-        </div>
+    {{-- Year --}}
+    <div>
+        <label class="block mb-1 font-semibold">Year</label>
+        <select name="years_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Year</option>
+            @foreach($years as $year)
+                <option value="{{ $year->id }}">{{ $year->year }}</option>
+            @endforeach
+        </select>
+        @error('years_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Year</label>
-            <input type="number" name="year" class="w-full border rounded p-2" required>
-        </div>
+    {{-- Fuel Type --}}
+    <div>
+        <label class="block mb-1 font-semibold">Fuel Type</label>
+        <select name="fuel_type_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Fuel</option>
+            @foreach($fuel_types as $fuel)
+                <option value="{{ $fuel->id }}">{{ $fuel->name }}</option>
+            @endforeach
+        </select>
+        @error('fuel_type_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Price</label>
-            <input type="number" name="price" class="w-full border rounded p-2" required>
-        </div>
+    {{-- Transmission --}}
+    <div>
+        <label class="block mb-1 font-semibold">Transmission</label>
+        <select name="transmission_type_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Transmission</option>
+            @foreach($transmissions as $trans)
+                <option value="{{ $trans->id }}">{{ $trans->name }}</option>
+            @endforeach
+        </select>
+        @error('transmission_type_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Mileage</label>
-            <input type="text" name="mileage" class="w-full border rounded p-2" required>
-        </div>
+    {{-- Location --}}
+    <div>
+        <label class="block mb-1 font-semibold">Location</label>
+        <select name="location_id" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm" required>
+            <option value="">Select Location</option>
+            @foreach($locations as $loc)
+                <option value="{{ $loc->id }}">{{ $loc->name }}</option>
+            @endforeach
+        </select>
+        @error('location_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Location</label>
-            <input type="text" name="location" class="w-full border rounded p-2" required>
-        </div>
+    {{-- Mileage --}}
+    <div>
+        <label class="block mb-1 font-semibold">Mileage</label>
+        <input type="text" name="mileage" placeholder="Enter Mileage" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm">
+        @error('mileage')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Fuel Type</label>
-            <input type="text" name="fuel_type" class="w-full border rounded p-2" required>
-        </div>
+    {{-- Price --}}
+    <div>
+        <label class="block mb-1 font-semibold">Price</label>
+        <input type="number" step="0.01" name="price" placeholder="Enter Price" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm">
+        @error('price')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Transmission</label>
-            <select name="transmission" class="w-full border rounded p-2" required>
-                <option value="Automatic">Automatic</option>
-                <option value="Manual">Manual</option>
-            </select>
-        </div>
+    {{-- Condition --}}
+    <div>
+        <label class="block mb-1 font-semibold">Condition</label>
+        <select name="condition" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm">
+            <option value="new">New</option>
+            <option value="used">Used</option>
+        </select>
+        @error('condition')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Condition</label>
-            <select name="condition" class="w-full border rounded p-2" required>
-                <option value="new">New</option>
-                <option value="used">Used</option>
-            </select>
-        </div>
+    {{-- Description --}}
+    <div>
+        <label class="block mb-1 font-semibold">Description</label>
+        <textarea name="description" rows="4" placeholder="Enter Description" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm"></textarea>
+        @error('description')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Description</label>
-            <textarea name="description" class="w-full border rounded p-2" required></textarea>
-        </div>
+    {{-- Listing Type --}}
+    <div>
+        <label class="block mb-1 font-semibold">Listing Type</label>
+        <select name="listing_type" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm">
+            <option value="featured">Featured</option>
+            <option value="urgent">Urgent</option>
+        </select>
+        @error('listing_type')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <div>
-            <label class="block">Featured</label>
-            <input type="checkbox" name="is_featured" value="1">
-        </div>
+    {{-- Photos --}}
+    <div>
+        <label class="block mb-1 font-semibold">Upload Photos</label>
+        <input type="file" name="photos[]" multiple class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm">
+        @error('photos')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+    </div>
 
-        <button class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-    </form>
-</div>
+    {{-- Video URL --}}
+    <div>
+        <label class="block mb-1 font-semibold">Video URL (optional)</label>
+        <input type="text" name="video_url" placeholder="Paste YouTube/Vimeo link" class="w-1/2 border p-2 rounded-lg border-gray-400 shadow-sm">
+    </div>
+
+    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-lg w-[120px]">Save</button>
+</form>
 @endsection

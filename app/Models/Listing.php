@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Listing extends Model
 {
     protected $fillable = [
-        'user_id'
-        , 'category_id',
+         'category_id',
          'brand_id', 
-         'model', 
-         'year', 
+         'model_id', 
+         'year_id', 
+         'fuel_type_id', 
+         'transmission_type_id', 
+        'location_id', 
+        'mileage',
          'price',
         'mileage',
-         'location', 
-         'fuel_type', 
-         'transmission', 
          'condition',
         'description', 
-        'is_featured', 
+        'listing_type', 
         'status'
     ];
 

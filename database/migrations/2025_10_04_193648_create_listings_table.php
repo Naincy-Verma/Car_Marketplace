@@ -12,20 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('listings', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // FK to customers table
+            $table->id();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
-            $table->string('model');
-            $table->year('year');
-            $table->decimal('price', 10, 2);
+            $table->foreignId('model_id')->constrained('models')->onDelete('cascade');
+            $table->foreignId('years_id')->constrained('years')->onDelete('cascade');
+            $table->foreignId('fuel_type_id')->constrained('fuel_types')->onDelete('cascade');
+            $table->foreignId('transmission_type_id')->constrained('transmission_types')->onDelete('cascade');
+            $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->string('mileage');
-            $table->string('location');
-            $table->string('fuel_type');
-            $table->string('transmission'); // 'Automatic' / 'Manual'
+            $table->decimal('price', 10, 2);
             $table->enum('condition', ['new', 'used']);
             $table->text('description');
-            $table->boolean('is_featured')->default(false);
+            $table->enum('listing_type', ['featured','urgent'])->default('featured');
             $table->enum('status', ['active', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
         });

@@ -5,6 +5,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\FuelTypeController;
+use App\Http\Controllers\TransmissionTypeController;
+use App\Http\Controllers\YearController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ModelController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -68,12 +74,55 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::put('/listings/{id}', [ListingController::class, 'update'])->name('listings.update');
         Route::delete('/listings/{id}', [ListingController::class, 'destroy'])->name('listings.destroy');
 
-        //User Routes
-        Route::get('/users', [UserController::class,'index'])->name('users.index');
-        Route::get('/users/create', [UserController::class,'create'])->name('users.create');
-        Route::post('/users', [UserController::class,'store'])->name('users.store');
-        Route::get('/users/{user}/edit', [UserController::class,'edit'])->name('users.edit');
-        Route::put('/users/{user}', [UserController::class,'update'])->name('users.update');
-        Route::delete('/users/{user}', [UserController::class,'destroy'])->name('users.destroy');
+         // Fuel Type Routes
+        Route::get('/fuel-types', [FuelTypeController::class, 'index'])->name('fuel_type.index');
+        Route::get('/fuel-types/create', [FuelTypeController::class, 'create'])->name('fuel_type.create');
+        Route::post('/fuel-types', [FuelTypeController::class, 'store'])->name('fuel_type.store');
+        Route::get('/fuel-types/{id}/edit', [FuelTypeController::class, 'edit'])->name('fuel_type.edit');
+        Route::put('/fuel-types/{id}', [FuelTypeController::class, 'update'])->name('fuel_type.update');
+        Route::delete('/fuel-types/{id}', [FuelTypeController::class, 'destroy'])->name('fuel_type.destroy');
+
+        // Transmission Types
+        Route::get('/transmissions', [TransmissionTypeController::class, 'index'])->name('transmission_type.index');
+        Route::get('/transmissions/create', [TransmissionTypeController::class, 'create'])->name('transmission_type.create');
+        Route::post('/transmissions', [TransmissionTypeController::class, 'store'])->name('transmission_type.store');
+        Route::get('/transmissions/{id}/edit', [TransmissionTypeController::class, 'edit'])->name('transmission_type.edit');
+        Route::put('/transmissions/{id}', [TransmissionTypeController::class, 'update'])->name('transmission_type.update');
+        Route::delete('/transmissions/{id}', [TransmissionTypeController::class, 'destroy'])->name('transmission_type.destroy');
+
+        // Years
+        Route::get('/years', [YearController::class, 'index'])->name('years.index');
+        Route::get('/years/create', [YearController::class, 'create'])->name('years.create');
+        Route::post('/years', [YearController::class, 'store'])->name('years.store');
+        Route::get('/years/{id}/edit', [YearController::class, 'edit'])->name('years.edit');
+        Route::put('/years/{id}', [YearController::class, 'update'])->name('years.update');
+        Route::delete('/years/{id}', [YearController::class, 'destroy'])->name('years.destroy');
+
+        // Locations
+        Route::get('/locations', [LocationController::class, 'index'])->name('location.index');
+        Route::get('/locations/create', [LocationController::class, 'create'])->name('location.create');
+        Route::post('/locations', [LocationController::class, 'store'])->name('location.store');
+        Route::get('/locations/{id}/edit', [LocationController::class, 'edit'])->name('location.edit');
+        Route::put('/locations/{id}', [LocationController::class, 'update'])->name('location.update');
+        Route::delete('/locations/{id}', [LocationController::class, 'destroy'])->name('location.destroy');
+       
+        // Models 
+        Route::get('/carmodels', [ModelController::class, 'index'])->name('model.index');
+        Route::get('/carmodels/create', [ModelController::class, 'create'])->name('model.create');
+        Route::post('/carmodels', [ModelController::class, 'store'])->name('model.store');
+        Route::get('/carmodels/{id}/edit', [ModelController::class, 'edit'])->name('model.edit');
+        Route::put('/carmodels/{id}', [ModelController::class, 'update'])->name('model.update');
+        Route::delete('/carmodels/{id}', [ModelController::class, 'destroy'])->name('model.destroy');
     });
 });
+
+
+// Route::view('register','pages.form.register');
+// Route::view('login','pages.form.login');
+
+// Auth routes
+Route::get('/register', [UserAuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [UserAuthController::class, 'register']);
+Route::get('/login', [UserAuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [UserAuthController::class, 'login']);
+Route::get('/logout', [UserAuthController::class, 'logout'])->name('logout');

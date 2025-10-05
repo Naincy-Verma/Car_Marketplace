@@ -13,12 +13,14 @@ class User extends Authenticatable
         'email', 
         'password', 
         'user_type', 
-        'phone',
-        'whatsapp', 
-        'telegram', 
-        'status'
+       'business_name',
+       'phone',
+       'whatsapp_no',
+       'telegram_username',
+       'status'
     ];
-    protected $hidden = ['password', 'remember_token'];
+
+    protected $hidden = ['password', ];
     public $timestamps = true;
-    protected $table ="customers";
+    protected $table = "users";
 }

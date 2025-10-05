@@ -83,6 +83,96 @@
                         <a href="{{ route('listings.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Listings</a>
                     </div>
                 </div>
+
+                <!-- Car Model Dropdown -->
+                <div x-data="{ open: false }">
+                    <button @click="open=!open" 
+                            class="w-full flex items-center justify-between py-2.5 px-6 hover:bg-blue-700 rounded">
+                        <span class="text-lg">🔑 Car Model</span>
+                        <svg :class="{'rotate-180': open}" 
+                            class="w-4 h-4 transform transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-cloak class="ml-6 space-y-1">
+                        <a href="{{ route('models.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Car Model</a>
+                        <a href="{{ route('models.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Car Model</a>
+                    </div>
+                </div>
+
+                <!-- Fuel type Dropdown -->
+                <div x-data="{ open: false }">
+                    <button @click="open=!open" 
+                            class="w-full flex items-center justify-between py-2.5 px-6 hover:bg-blue-700 rounded">
+                        <span class="text-lg">🔑 Fuel type</span>
+                        <svg :class="{'rotate-180': open}" 
+                            class="w-4 h-4 transform transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-cloak class="ml-6 space-y-1">
+                        <a href="{{ route('fuel-types.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Fuel Type</a>
+                        <a href="{{ route('fuel-types.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Fuel Type</a>
+                    </div>
+                </div>
+
+                <!-- Transmission type Dropdown -->
+                <div x-data="{ open: false }">
+                    <button @click="open=!open" 
+                            class="w-full flex items-center justify-between py-2.5 px-6 hover:bg-blue-700 rounded">
+                        <span class="text-lg">🔑 Transmission type</span>
+                        <svg :class="{'rotate-180': open}" 
+                            class="w-4 h-4 transform transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-cloak class="ml-6 space-y-1">
+                        <a href="{{ route('transmission.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Transmission Type</a>
+                        <a href="{{ route('transmission.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Transmission Type</a>
+                    </div>
+                </div>
+
+                <!-- Location  Dropdown -->
+                <div x-data="{ open: false }">
+                    <button @click="open=!open" 
+                            class="w-full flex items-center justify-between py-2.5 px-6 hover:bg-blue-700 rounded">
+                        <span class="text-lg">🔑 Location </span>
+                        <svg :class="{'rotate-180': open}" 
+                            class="w-4 h-4 transform transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-cloak class="ml-6 space-y-1">
+                        <a href="{{ route('locations.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Locations</a>
+                        <a href="{{ route('locations.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Locations</a>
+                    </div>
+                </div>
+
+                <!-- Year  Dropdown -->
+                <div x-data="{ open: false }">
+                    <button @click="open=!open" 
+                            class="w-full flex items-center justify-between py-2.5 px-6 hover:bg-blue-700 rounded">
+                        <span class="text-lg">🔑 Year </span>
+                        <svg :class="{'rotate-180': open}" 
+                            class="w-4 h-4 transform transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-cloak class="ml-6 space-y-1">
+                        <a href="{{ route('years.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Years</a>
+                        <a href="{{ route('years.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Years</a>
+                    </div>
+                </div>
             </nav>
         </aside>
 
@@ -115,13 +205,13 @@
             </header>
             <div class="max-w-5xl mx-auto mt-4">
             @if(session('success'))
-                <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">
+                <div class="mb-3 p-3 bg-green-100 text-green-800 rounded">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
+                <div class="mb-2 p-3 bg-red-100 text-red-800 rounded">
                     {{ session('error') }}
                 </div>
             @endif

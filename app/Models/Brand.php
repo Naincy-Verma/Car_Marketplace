@@ -8,15 +8,17 @@ class Brand extends Model
 {
     protected $fillable = [
         'name',
-        'logo',
-        'status'
+        'image',
+        'slug'
     ];
 
 
         public $timestamps = true;
         protected $table = 'brands';
 
-    public function listings() {
-        return $this->hasMany(Listing::class);
+   // Relationship: One Category has many Listings
+    public function brands()
+    {
+        return $this->hasMany(Brand::class, 'brand_id', 'id');
     }
 }
