@@ -22,7 +22,7 @@ class ListingController extends Controller
     {
         // Admin view: all listings
         $listings = Listing::with('media', 'category', 'brand', 'model', 'fuelType', 'transmissionType', 'location')->get();
-        return view('listings.index', compact('listings'));
+        return view('adminpages.listing.index', compact('listings'));
     }
 
     /**
@@ -31,12 +31,12 @@ class ListingController extends Controller
     public function create()
     {
         // Pass categories, brands, models etc. to the view
-        return view('listings.create', [
+        return view('adminpages.listing.create', [
             'categories' => Category::all(),
             'brands' => Brand::all(),
             'models' => CarModel::all(),
             'years' => Year::all(),
-            'fuelTypes' => FuelType::all(),
+            'fuel_types' => FuelType::all(),
             'transmissions' => TransmissionType::all(),
             'locations' => Location::all(),
         ]);
@@ -104,7 +104,7 @@ class ListingController extends Controller
     public function show(Listing $listing)
     {
         $listing->load('media', 'category', 'brand', 'model', 'fuelType', 'transmissionType', 'location');
-        return view('listings.show', compact('listing'));
+        return view('adminpages.listing.show', compact('listing'));
     }
 
     /**

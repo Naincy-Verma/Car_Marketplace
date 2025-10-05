@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,12 +11,12 @@ class FuelTypeController extends Controller
     public function index()
     {
         $fuelTypes = FuelType::all();
-        return view('admin.fuel_type.index', compact('fuelTypes'));
+        return view('adminpages.fuel_type.index', compact('fuelTypes'));
     }
 
     public function create()
     {
-        return view('admin.fuel_type.create');
+        return view('adminpages.fuel_type.create');
     }
 
     public function store(Request $request)
@@ -28,12 +28,12 @@ class FuelTypeController extends Controller
 
         FuelType::create($request->all());
 
-        return redirect()->route('admin.fuel_type.index')->with('success', 'Fuel type created successfully.');
+        return redirect()->route('fuel_type.index')->with('success', 'Fuel type created successfully.');
     }
 
     public function edit(FuelType $fuelType)
     {
-        return view('admin.fuel_type.edit', compact('fuelType'));
+        return view('adminpages.fuel_type.edit', compact('fuelType'));
     }
 
     public function update(Request $request, FuelType $fuelType)
@@ -45,12 +45,12 @@ class FuelTypeController extends Controller
 
         $fuelType->update($request->all());
 
-        return redirect()->route('admin.fuel_type.index')->with('success', 'Fuel type updated successfully.');
+        return redirect()->route('fuel_type.index')->with('success', 'Fuel type updated successfully.');
     }
 
     public function destroy(FuelType $fuelType)
     {
         $fuelType->delete();
-        return redirect()->route('admin.fuel_type.index')->with('success', 'Fuel type deleted successfully.');
+        return redirect()->route('fuel_type.index')->with('success', 'Fuel type deleted successfully.');
     }
 }

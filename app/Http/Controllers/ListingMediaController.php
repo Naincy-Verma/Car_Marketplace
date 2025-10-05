@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class ListingMediaController extends Controller
     public function index()
     {
         $medias = ListingMedia::with('listing')->get();
-        return view('admin.listing_media.index', compact('medias'));
+        return view('adminpages.listing_media.index', compact('medias'));
     }
 
     /**
@@ -24,7 +24,7 @@ class ListingMediaController extends Controller
     public function create()
     {
         $listings = Listing::all();
-        return view('admin.listing_media.create', compact('listings'));
+        return view('adminpages.listing_media.create', compact('listings'));
     }
 
     /**
@@ -58,7 +58,7 @@ class ListingMediaController extends Controller
 
         ListingMedia::create($data);
 
-        return redirect()->route('admin.listing_media.index')->with('success', 'Media added successfully.');
+        return redirect()->route('listing_media.index')->with('success', 'Media added successfully.');
     }
 
     /**
@@ -67,7 +67,7 @@ class ListingMediaController extends Controller
     public function edit(ListingMedia $listingMedia)
     {
         $listings = Listing::all();
-        return view('admin.listing_media.edit', compact('listingMedia', 'listings'));
+        return view('adminpages.listing_media.edit', compact('listingMedia', 'listings'));
     }
 
     /**
@@ -104,7 +104,7 @@ class ListingMediaController extends Controller
 
         $listingMedia->update($data);
 
-        return redirect()->route('admin.listing_media.index')->with('success', 'Media updated successfully.');
+        return redirect()->route('listing_media.index')->with('success', 'Media updated successfully.');
     }
 
     /**
@@ -119,6 +119,6 @@ class ListingMediaController extends Controller
 
         $listingMedia->delete();
 
-        return redirect()->route('admin.listing_media.index')->with('success', 'Media deleted successfully.');
+        return redirect()->route('listing_media.index')->with('success', 'Media deleted successfully.');
     }
 }

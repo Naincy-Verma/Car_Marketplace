@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class LocationController extends Controller
     public function index()
     {
         $locations = Location::all();
-        return view('admin.location.index', compact('locations'));
+        return view('adminpages.location.index', compact('locations'));
     }
 
     /**
@@ -22,7 +22,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        return view('admin.location.create');
+        return view('adminpages.location.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class LocationController extends Controller
 
         Location::create($request->all());
 
-        return redirect()->route('admin.location.index')->with('success', 'Location created successfully.');
+        return redirect()->route('location.index')->with('success', 'Location created successfully.');
     }
 
     /**
@@ -45,7 +45,7 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
-        return view('admin.location.edit', compact('location'));
+        return view('adminpages.location.edit', compact('location'));
     }
 
     /**
@@ -60,7 +60,7 @@ class LocationController extends Controller
 
         $location->update($request->all());
 
-        return redirect()->route('admin.location.index')->with('success', 'Location updated successfully.');
+        return redirect()->route('location.index')->with('success', 'Location updated successfully.');
     }
 
     /**
@@ -69,6 +69,6 @@ class LocationController extends Controller
     public function destroy(Location $location)
     {
         $location->delete();
-        return redirect()->route('admin.location.index')->with('success', 'Location deleted successfully.');
+        return redirect()->route('location.index')->with('success', 'Location deleted successfully.');
     }
 }

@@ -4,7 +4,7 @@
 <div class="p-6 max-w-lg mx-auto">
     <h1 class="text-2xl font-bold mb-4 text-white">Edit Transmission Type</h1>
 
-    <form action="{{ route('admin.transmission_type.update', $transmission->id) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+    <form action="{{ route('transmission_type.update', $transmission->id) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-lg">
         @csrf
         @method('PUT')
 

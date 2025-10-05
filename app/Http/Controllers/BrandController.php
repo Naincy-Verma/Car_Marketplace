@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -50,7 +50,7 @@ class BrandController extends Controller
             'image' => $imageName ?? null,
         ]);
 
-        return redirect()->route('brand.index')->with('success', 'Brand added successfully.');
+        return redirect()->route('brands.index')->with('success', 'Brand added successfully.');
     }
 
     /**
@@ -91,7 +91,7 @@ class BrandController extends Controller
         $brand->slug = Str::slug($request->slug);
         $brand->save();
 
-        return redirect()->route('brand.index')->with('success', 'Brand updated successfully.');
+        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
     }
 
     /**
@@ -107,6 +107,6 @@ class BrandController extends Controller
         }
 
         $brand->delete();
-        return redirect()->route('brand.index')->with('success', 'Brand deleted successfully.');
+        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
     }
 }

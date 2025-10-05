@@ -4,7 +4,7 @@
 <div class="p-6 max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold mb-6 text-gray-800">Add New Location</h1>
 
-    <form action="{{ route('locations.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow">
+    <form action="{{ route('location.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow">
         @csrf
         <div class="mb-4">
             <label class="block font-semibold text-gray-700 mb-2">Location Name</label>

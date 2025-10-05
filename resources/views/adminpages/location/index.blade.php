@@ -4,7 +4,7 @@
 <div class="p-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Manage Locations</h1>
-        <a href="{{ route('locations.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow">
+        <a href="{{ route('location.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow">
             + Add New Location
         </a>
     </div>
@@ -32,8 +32,8 @@
                         <td class="px-4 py-2 border-b">{{ $location->name }}</td>
                         <td class="px-4 py-2 border-b text-gray-600">{{ $location->slug }}</td>
                         <td class="px-4 py-2 border-b">
-                            <a href="{{ route('locations.edit', $location->id) }}" class="text-blue-600 hover:underline mr-3">Edit</a>
-                            <form action="{{ route('locations.destroy', $location->id) }}" method="POST" class="inline">
+                            <a href="{{ route('location.edit', $location->id) }}" class="text-blue-600 hover:underline mr-3">Edit</a>
+                            <form action="{{ route('location.destroy', $location->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Are you sure?')">Delete</button>

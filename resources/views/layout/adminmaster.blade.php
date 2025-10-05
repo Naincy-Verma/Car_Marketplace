@@ -97,8 +97,8 @@
                         </svg>
                     </button>
                     <div x-show="open" x-cloak class="ml-6 space-y-1">
-                        <a href="{{ route('models.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Car Model</a>
-                        <a href="{{ route('models.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Car Model</a>
+                        <a href="{{ route('model.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Car Model</a>
+                        <a href="{{ route('model.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Car Model</a>
                     </div>
                 </div>
 
@@ -115,8 +115,8 @@
                         </svg>
                     </button>
                     <div x-show="open" x-cloak class="ml-6 space-y-1">
-                        <a href="{{ route('fuel-types.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Fuel Type</a>
-                        <a href="{{ route('fuel-types.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Fuel Type</a>
+                        <a href="{{ route('fuel_type.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Fuel Type</a>
+                        <a href="{{ route('fuel_type.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Fuel Type</a>
                     </div>
                 </div>
 
@@ -133,8 +133,8 @@
                         </svg>
                     </button>
                     <div x-show="open" x-cloak class="ml-6 space-y-1">
-                        <a href="{{ route('transmission.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Transmission Type</a>
-                        <a href="{{ route('transmission.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Transmission Type</a>
+                        <a href="{{ route('transmission_type.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Transmission Type</a>
+                        <a href="{{ route('transmission_type.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Transmission Type</a>
                     </div>
                 </div>
 
@@ -151,8 +151,8 @@
                         </svg>
                     </button>
                     <div x-show="open" x-cloak class="ml-6 space-y-1">
-                        <a href="{{ route('locations.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Locations</a>
-                        <a href="{{ route('locations.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Locations</a>
+                        <a href="{{ route('location.index') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">View Locations</a>
+                        <a href="{{ route('location.create') }}" class="block py-2 px-4 hover:bg-blue-700 rounded text-md">Add Locations</a>
                     </div>
                 </div>
 

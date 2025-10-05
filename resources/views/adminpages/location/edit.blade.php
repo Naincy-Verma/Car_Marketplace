@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('locations.update', $location->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow">
+    <form action="{{ route('location.update', $location->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow">
         @csrf
         @method('PUT')
 

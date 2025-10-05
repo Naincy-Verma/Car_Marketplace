@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,12 +11,12 @@ class TransmissionTypeController extends Controller
     public function index()
     {
         $transmissions = TransmissionType::all();
-        return view('admin.transmission_types.index', compact('transmissions'));
+        return view('adminpages.transmission_type.index', compact('transmissions'));
     }
 
     public function create()
     {
-        return view('admin.transmission_types.create');
+        return view('adminpages.transmission_type.create');
     }
 
     public function store(Request $request)
@@ -28,12 +28,12 @@ class TransmissionTypeController extends Controller
 
         TransmissionType::create($request->all());
 
-        return redirect()->route('admin.transmission_types.index')->with('success', 'Transmission type created successfully.');
+        return redirect()->route('transmission_type.index')->with('success', 'Transmission type created successfully.');
     }
 
     public function edit(TransmissionType $transmissionType)
     {
-        return view('admin.transmission_types.edit', compact('transmissionType'));
+        return view('adminpages.transmission_type.edit', compact('transmissionType'));
     }
 
     public function update(Request $request, TransmissionType $transmissionType)
@@ -45,12 +45,12 @@ class TransmissionTypeController extends Controller
 
         $transmissionType->update($request->all());
 
-        return redirect()->route('admin.transmission_types.index')->with('success', 'Transmission type updated successfully.');
+        return redirect()->route('transmission_type.index')->with('success', 'Transmission type updated successfully.');
     }
 
     public function destroy(TransmissionType $transmissionType)
     {
         $transmissionType->delete();
-        return redirect()->route('admin.transmission_types.index')->with('success', 'Transmission type deleted successfully.');
+        return redirect()->route('transmission_type.index')->with('success', 'Transmission type deleted successfully.');
     }
 }

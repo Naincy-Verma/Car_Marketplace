@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CarModel;
 
-class ModelCarController extends Controller
+class ModelController extends Controller
 {
     public function index()
     {
-        $models = ModelCar::all();
-        return view('admin.model.index', compact('models'));
+        $models = CarModel::all();
+        return view('adminpages.carmodel.index', compact('models'));
     }
 
     public function create()
     {
-        return view('admin.model.create');
+        return view('adminpages.carmodel.create');
     }
 
     public function store(Request $request)
@@ -26,17 +26,17 @@ class ModelCarController extends Controller
             'slug' => 'required|string|max:255|unique:models,slug',
         ]);
 
-        ModelCar::create($request->all());
+        CarModel::create($request->all());
 
-        return redirect()->route('admin.models.index')->with('success', 'Model created successfully.');
+        return redirect()->route('model.index')->with('success', 'Model created successfully.');
     }
 
-    public function edit(ModelCar $model)
+    public function edit(CarModel $model)
     {
-        return view('admin.model.edit', compact('model'));
+        return view('adminpages.carmodel.edit', compact('model'));
     }
 
-    public function update(Request $request, ModelCar $model)
+    public function update(Request $request, CarModel $model)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -45,12 +45,12 @@ class ModelCarController extends Controller
 
         $model->update($request->all());
 
-        return redirect()->route('admin.models.index')->with('success', 'Model updated successfully.');
+        return redirect()->route('model.index')->with('success', 'Model updated successfully.');
     }
 
-    public function destroy(ModelCar $model)
+    public function destroy(CarModel $model)
     {
         $model->delete();
-        return redirect()->route('admin.models.index')->with('success', 'Model deleted successfully.');
+        return redirect()->route('model.index')->with('success', 'Model deleted successfully.');
     }
 }

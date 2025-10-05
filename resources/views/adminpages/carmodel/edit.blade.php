@@ -4,7 +4,7 @@
 @section('content')
 <h1 class="text-2xl font-bold mb-4">Edit Car Model</h1>
 
-<form action="{{ route('carmodel.update', $carmodel->id) }}" method="POST" class="space-y-4">
+<form action="{{ route('model.update', $carmodel->id) }}" method="POST" class="space-y-4">
     @csrf
     @method('PUT')
 

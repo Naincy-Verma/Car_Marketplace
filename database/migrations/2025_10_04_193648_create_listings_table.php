@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
-            $table->foreignId('model_id')->constrained('models')->onDelete('cascade');
+            $table->foreignId('model_id')->constrained('carmodels')->onDelete('cascade');
             $table->foreignId('years_id')->constrained('years')->onDelete('cascade');
             $table->foreignId('fuel_type_id')->constrained('fuel_types')->onDelete('cascade');
             $table->foreignId('transmission_type_id')->constrained('transmission_types')->onDelete('cascade');

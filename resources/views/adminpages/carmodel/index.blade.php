@@ -4,7 +4,7 @@
 @section('content')
 <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold">Car Models</h1>
-    <a href="{{ route('carmodel.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-lg">+ Add Car Model</a>
+    <a href="{{ route('model.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-lg">+ Add Car Model</a>
 </div>
 
 <table class="w-full border-collapse border border-gray-300">
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($carmodels as $model)
+        @foreach($models as $model)
         <tr class="hover:bg-gray-50">
             <td class="border px-4 py-2">{{ $model->id }}</td>
             <td class="border px-4 py-2">{{ $model->name }}</td>
@@ -25,12 +25,12 @@
             <td class="border px-4 py-2 flex gap-2 justify-center">
                 
                 <!-- Edit Icon -->
-                <a href="{{ route('carmodel.edit', $model->id) }}" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                <a href="{{ route('model.edit', $model->id) }}" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
                      <i class="fas fa-edit"></i>
                 </a>
 
                 <!-- Delete Icon -->
-                <form action="{{ route('carmodel.destroy', $model->id) }}" method="POST">
+                <form action="{{ route('model.destroy', $model->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,12 +11,12 @@ class YearController extends Controller
     public function index()
     {
         $years = Year::all();
-        return view('admin.years.index', compact('years'));
+        return view('adminpages.year.index', compact('years'));
     }
 
     public function create()
     {
-        return view('admin.years.create');
+        return view('adminpages.year.create');
     }
 
     public function store(Request $request)
@@ -27,12 +27,12 @@ class YearController extends Controller
 
         Year::create($request->all());
 
-        return redirect()->route('admin.years.index')->with('success', 'Year created successfully.');
+        return redirect()->route('years.index')->with('success', 'Year created successfully.');
     }
 
     public function edit(Year $year)
     {
-        return view('admin.years.edit', compact('year'));
+        return view('adminpages.year.edit', compact('year'));
     }
 
     public function update(Request $request, Year $year)
@@ -43,12 +43,12 @@ class YearController extends Controller
 
         $year->update($request->all());
 
-        return redirect()->route('admin.years.index')->with('success', 'Year updated successfully.');
+        return redirect()->route('years.index')->with('success', 'Year updated successfully.');
     }
 
     public function destroy(Year $year)
     {
         $year->delete();
-        return redirect()->route('admin.years.index')->with('success', 'Year deleted successfully.');
+        return redirect()->route('years.index')->with('success', 'Year deleted successfully.');
     }
 }

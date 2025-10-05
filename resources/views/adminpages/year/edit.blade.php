@@ -5,7 +5,7 @@
 <div class="p-6 max-w-lg mx-auto">
     <h1 class="text-2xl font-bold mb-4 text-white">Edit Year</h1>
 
-    <form action="{{ route('admin.years.update', $year->id) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+    <form action="{{ route('years.update', $year->id) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-lg">
         @csrf
         @method('PUT')
 

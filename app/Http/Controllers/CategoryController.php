@@ -43,7 +43,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Categories $categories)
+    public function show(Category $category)
     {
         //
     }
@@ -51,7 +51,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categories $categories)
+    public function edit(Category $category)
     {
         return view('adminpages.category.edit', compact('category'));
     }
@@ -59,7 +59,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categories $categories)
+    public function update(Request $request, Category $category)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -75,7 +75,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categories $categories)
+    public function destroy(Category $category)
     {
          $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');

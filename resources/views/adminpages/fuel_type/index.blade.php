@@ -4,7 +4,7 @@
 @section('content')
 <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold">Fuel Types</h1>
-    <a href="{{ route('fuel_types.create') }}" 
+    <a href="{{ route('fuel_type.create') }}" 
        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-lg">+ Add Fuel Type</a>
 </div>
 
@@ -26,13 +26,13 @@
             <td class="border px-4 py-2 flex gap-2 justify-center">
                 
                 <!-- Edit -->
-                <a href="{{ route('fuel_types.edit', $fuel->id) }}" 
+                <a href="{{ route('fuel_type.edit', $fuel->id) }}" 
                    class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <!-- Delete -->
-                <form action="{{ route('fuel_types.destroy', $fuel->id) }}" method="POST" 
+                <form action="{{ route('fuel_type.destroy', $fuel->id) }}" method="POST" 
                       onsubmit="return confirm('Are you sure you want to delete this fuel type?');">
                     @csrf
                     @method('DELETE')

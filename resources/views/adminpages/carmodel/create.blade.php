@@ -4,7 +4,7 @@
 @section('content')
 <h1 class="text-2xl font-bold mb-4">Add Car Model</h1>
 
-<form action="{{ route('carmodel.store') }}" method="POST" class="space-y-4">
+<form action="{{ route('model.store') }}" method="POST" class="space-y-4">
     @csrf
 
     <div>

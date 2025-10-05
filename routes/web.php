@@ -11,6 +11,7 @@ use App\Http\Controllers\TransmissionTypeController;
 use App\Http\Controllers\YearController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ModelController;
+use App\Http\Controllers\ListingMediaController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -113,6 +114,14 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/carmodels/{id}/edit', [ModelController::class, 'edit'])->name('model.edit');
         Route::put('/carmodels/{id}', [ModelController::class, 'update'])->name('model.update');
         Route::delete('/carmodels/{id}', [ModelController::class, 'destroy'])->name('model.destroy');
+
+        // Listing Media Routes
+        Route::get('/listing-media', [ListingMediaController::class, 'index'])->name('listing_media.index');
+        Route::get('/listing-media/create', [ListingMediaController::class, 'create'])->name('listing_media.create');
+        Route::post('/listing-media', [ListingMediaController::class, 'store'])->name('listing_media.store');
+        Route::get('/listing-media/{listingMedia}/edit', [ListingMediaController::class, 'edit'])->name('listing_media.edit');
+        Route::put('/listing-media/{listingMedia}', [ListingMediaController::class, 'update'])->name('listing_media.update');
+        Route::delete('/listing-media/{listingMedia}', [ListingMediaController::class, 'destroy'])->name('listing_media.destroy');
     });
 });
 
