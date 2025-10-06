@@ -783,6 +783,60 @@
         </div>
     </section>
 
+    <!-- Browse by Brand -->
+<section id="brands" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4 animate-slide-in-left">Browse by Brand</h2>
+            <p class="text-gray-600 text-lg animate-fade-in-up">Explore cars from top manufacturers</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <a href="/car/listing?brand=Toyota" class="category-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Toyota Logo" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg">Toyota</h3>
+                <p class="text-sm text-gray-600 mt-1">320 Cars</p>
+            </a>
+            <a href="/car/listing?brand=Honda" class="category-card bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Honda Logo" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg">Honda</h3>
+                <p class="text-sm text-gray-600 mt-1">280 Cars</p>
+            </a>
+            <a href="/car/listing?brand=BMW" class="category-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="BMW Logo" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg">BMW</h3>
+                <p class="text-sm text-gray-600 mt-1">150 Cars</p>
+            </a>
+            <a href="/car/listing?brand=Mercedes" class="category-card bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Mercedes Logo" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg">Mercedes</h3>
+                <p class="text-sm text-gray-600 mt-1">120 Cars</p>
+            </a>
+            <a href="/car/listing?brand=Audi" class="category-card bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Audi Logo" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg">Audi</h3>
+                <p class="text-sm text-gray-600 mt-1">100 Cars</p>
+            </a>
+            <a href="/car/listing?brand=Hyundai" class="category-card bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Hyundai Logo" class="w-12 h-12 object-contain">
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg">Hyundai</h3>
+                <p class="text-sm text-gray-600 mt-1">200 Cars</p>
+            </a>
+        </div>
+    </div>
+</section>
+
     <!-- Contact Section -->
     <section id="contact" class="py-16 bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
