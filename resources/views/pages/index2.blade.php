@@ -809,48 +809,36 @@
             <p class="text-gray-600 text-lg animate-fade-in-up">Explore cars from top manufacturers</p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            <a href="/car/listing?brand=Toyota" class="category-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
-                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Toyota Logo" class="w-12 h-12 object-contain">
+            @forelse($brands as $index => $brand)
+                @php
+                    $colors = [
+                        'from-blue-50 to-blue-100',
+                        'from-emerald-50 to-emerald-100', 
+                        'from-purple-50 to-purple-100',
+                        'from-red-50 to-red-100',
+                        'from-yellow-50 to-yellow-100',
+                        'from-orange-50 to-orange-100'
+                    ];
+                    $colorClass = $colors[$index % count($colors)];
+                @endphp
+                <a href="/car/listing?brand={{ $brand->slug }}" class="category-card bg-gradient-to-br {{ $colorClass }} rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
+                    <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
+                        @if($brand->image)
+                            <img src="{{ asset('assets/images/brand/' . $brand->image) }}" alt="{{ $brand->name }} Logo" class="w-12 h-12 object-contain">
+                        @else
+                            <i class="fas fa-car text-gray-400 text-2xl"></i>
+                        @endif
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg">{{ $brand->name }}</h3>
+                    <p class="text-sm text-gray-600 mt-1">{{ $brand->listings_count }} {{ Str::plural('Car', $brand->listings_count) }}</p>
+                </a>
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-car text-gray-400 text-6xl mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Brands Available</h3>
+                    <p class="text-gray-500">Brands will appear here once they are added to the system.</p>
                 </div>
-                <h3 class="font-bold text-gray-800 text-lg">Toyota</h3>
-                <p class="text-sm text-gray-600 mt-1">320 Cars</p>
-            </a>
-            <a href="/car/listing?brand=Honda" class="category-card bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
-                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Honda Logo" class="w-12 h-12 object-contain">
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg">Honda</h3>
-                <p class="text-sm text-gray-600 mt-1">280 Cars</p>
-            </a>
-            <a href="/car/listing?brand=BMW" class="category-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
-                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="BMW Logo" class="w-12 h-12 object-contain">
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg">BMW</h3>
-                <p class="text-sm text-gray-600 mt-1">150 Cars</p>
-            </a>
-            <a href="/car/listing?brand=Mercedes" class="category-card bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
-                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Mercedes Logo" class="w-12 h-12 object-contain">
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg">Mercedes</h3>
-                <p class="text-sm text-gray-600 mt-1">120 Cars</p>
-            </a>
-            <a href="/car/listing?brand=Audi" class="category-card bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
-                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Audi Logo" class="w-12 h-12 object-contain">
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg">Audi</h3>
-                <p class="text-sm text-gray-600 mt-1">100 Cars</p>
-            </a>
-            <a href="/car/listing?brand=Hyundai" class="category-card bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 text-center cursor-pointer animate-fade-in-up">
-                <div class="bg-white rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1614631447676-1f61b5f2d044?w=100&h=100&fit=crop" alt="Hyundai Logo" class="w-12 h-12 object-contain">
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg">Hyundai</h3>
-                <p class="text-sm text-gray-600 mt-1">200 Cars</p>
-            </a>
+            @endforelse
         </div>
     </div>
 </section>

@@ -71,7 +71,7 @@ class BrandController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:brands,slug,'.$brand->id,
+            'slug' => 'string|max:255|unique:brands,slug,'.$brand->id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
@@ -88,7 +88,7 @@ class BrandController extends Controller
         }
 
         $brand->name = $request->name;
-        $brand->slug = Str::slug($request->slug);
+        $brand->slug = Str::slug($request->name);
         $brand->save();
 
         return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');

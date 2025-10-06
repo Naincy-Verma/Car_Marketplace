@@ -31,8 +31,8 @@
                         <td class="px-4 py-2 border-b">{{ $category->name }}</td>
                         <td class="px-4 py-2 border-b text-gray-600">{{ $category->slug }}</td>
                         <td class="px-4 py-2 border-b">
-                            <a href="{{ route('categories.edit', $category->id) }}" class="text-blue-600 hover:underline mr-3">Edit</a>
-                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
+                            <a href="{{ route('categories.edit', $category) }}" class="text-blue-600 hover:underline mr-3">Edit</a>
+                            <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>

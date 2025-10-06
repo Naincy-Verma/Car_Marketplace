@@ -34,7 +34,6 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Max 2MB
-             'slug' => 'required|string|max:255|unique:categories,slug,'.$category->id,
         ]);
 
         $data = $request->all();
@@ -44,6 +43,7 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             $imageName = time().'_'.$request->image->getClientOriginalName();
             $request->image->move(public_path('assets/images/category'), $imageName);
+            $data['image'] = $imageName;
         }
 
         Category::create($data);
@@ -72,35 +72,28 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $category = Brand::findOrFail($id);
-
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image optional on update
-             'slug' => 'required|string|max:255|unique:brands,slug,'.$brand->id,
-
+            'slug' => 'required|string|max:255|unique:categories,slug,'.$category->id,
         ]);
 
-        // $data = $request->all();
-        // $data['slug'] = Str::slug($request->name); // Regenerate slug
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name); // Generate slug from name
 
         // Handle image upload
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($category->image && File::exists(public_path('assets/images/category/'.$category->image))) {
-                 File::delete(public_path('assets/images/brand/'.$brand->image));
+            if ($category->image && file_exists(public_path('assets/images/category/'.$category->image))) {
+                unlink(public_path('assets/images/category/'.$category->image));
             }
             
-             $imageName = time().'_'.$request->image->getClientOriginalName();
-            $request->image->move(public_path('assets/images/brand'), $imageName);
-            $brand->image = $imageName;
+            $imageName = time().'_'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('assets/images/category'), $imageName);
+            $data['image'] = $imageName;
         }
 
-        // $category->update($data);
-
-         $category->name = $request->name;
-        $category->slug = Str::slug($request->slug);
-        $category->save();
+        $category->update($data);
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
@@ -110,11 +103,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-         $category = Brand::findOrFail($id);
-
         // Delete image
-        if ($category->image && File::exists(public_path('assets/images/category/'.$category->image))) {
-            File::delete(public_path('assets/images/category/'.$category->image));
+        if ($category->image && file_exists(public_path('assets/images/category/'.$category->image))) {
+            unlink(public_path('assets/images/category/'.$category->image));
         }
 
         $category->delete();

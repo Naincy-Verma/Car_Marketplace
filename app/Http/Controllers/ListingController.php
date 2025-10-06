@@ -189,11 +189,11 @@ class ListingController extends Controller
                 $file->move(public_path('assets/images/listings'), $filename);
 
                 ListingMedia::create([
-                'listing_id' => $listing->id,
-                'type' => $type,
-                'file_path' => $type === 'image' ? $filename : null,
-                'video_url' => $type === 'video' ? $videoUrl : null, // set $videoUrl if uploaded
-            ]);
+                    'listing_id' => $listing->id,
+                    'type' => $type,
+                    'file_path' => $filename,
+                    'video_url' => null,
+                ]);
             }
         }
 

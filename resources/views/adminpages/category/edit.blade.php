@@ -5,7 +5,7 @@
     <h1 class="text-2xl font-bold mb-6 text-gray-800">Edit Category</h1>
 
 
-    <form action="{{ route('categories.update', $category->id) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow">
+    <form action="{{ route('categories.update', $category) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow">
         @csrf
         @method('PUT')
 

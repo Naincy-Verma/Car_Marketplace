@@ -16,9 +16,9 @@ class Brand extends Model
         public $timestamps = true;
         protected $table = 'brands';
 
-   // Relationship: One Category has many Listings
-    public function brands()
+    // Relationship: One Brand has many Listings
+    public function listings()
     {
-        return $this->hasMany(Brand::class, 'brand_id', 'id');
+        return $this->hasMany(Listing::class, 'brand_id', 'id');
     }
 }

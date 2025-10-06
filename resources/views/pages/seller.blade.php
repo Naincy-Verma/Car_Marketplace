@@ -192,7 +192,7 @@
                     @forelse($userListings as $listing)
                         <div class="listing-card bg-gray-50 rounded-xl overflow-hidden shadow-md">
                             @if($listing->media->where('type', 'image')->first())
-                                <img src="{{ asset('assets/images/listings/' . $listing->media->where('type', 'image')->first()->file) }}" 
+                                <img src="{{ asset('assets/images/listings/' . $listing->media->where('type', 'image')->first()->file_path) }}" 
                                      alt="{{ $listing->brand->name }} {{ $listing->model->name }}" 
                                      class="w-full h-48 object-cover">
                             @else
