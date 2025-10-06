@@ -12,7 +12,7 @@ class CarModel extends Model
         'slug',
     ];
 
-    public $timestamps = 'true';
+    public $timestamps = true;
     protected $table = 'carmodels';
 
     public function listings()

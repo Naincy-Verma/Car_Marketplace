@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('listing_medias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('listing_id')->constrained()->onDelete('cascade');
+              $table->foreignId('listing_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['image', 'video']);   // differentiate
             $table->string('file_path');    // for photos (stored as file path)
             $table->string('video_url');    // for videos (YouTube/Vimeo/self-hosted)

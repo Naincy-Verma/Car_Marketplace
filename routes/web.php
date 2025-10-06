@@ -80,6 +80,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/listings/{id}/edit', [ListingController::class, 'edit'])->name('listings.edit');
         Route::put('/listings/{id}', [ListingController::class, 'update'])->name('listings.update');
         Route::delete('/listings/{id}', [ListingController::class, 'destroy'])->name('listings.destroy');
+        Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
 
          // Fuel Type Routes
         Route::get('/fuel-types', [FuelTypeController::class, 'index'])->name('fuel_type.index');

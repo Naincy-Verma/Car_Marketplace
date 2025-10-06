@@ -7,4 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Location extends Model
 {
     //
+    protected $fillable =[
+        'name',
+        'slug'
+    ];
+
+    public $timestamps = true;
+    protected $table = "locations";
 }

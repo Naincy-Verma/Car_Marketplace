@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+
 
 class CategoryController extends Controller
 {
@@ -33,18 +33,17 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Max 2MB
+             'slug' => 'required|string|max:255|unique:categories,slug,'.$category->id,
         ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->name); // Generate slug from name
 
-        // Handle image upload
+        // Upload image
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . Str::slug($image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('assets/images', $imageName, 'public');
-            $data['image'] = $imagePath;
+            $imageName = time().'_'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('assets/images/category'), $imageName);
         }
 
         Category::create($data);
@@ -73,28 +72,35 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $category = Brand::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image optional on update
-            'status' => 'required|in:active,inactive',
+             'slug' => 'required|string|max:255|unique:brands,slug,'.$brand->id,
+
         ]);
 
-        $data = $request->all();
-        $data['slug'] = Str::slug($request->name); // Regenerate slug
+        // $data = $request->all();
+        // $data['slug'] = Str::slug($request->name); // Regenerate slug
 
         // Handle image upload
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($category->image && Storage::disk('public')->exists($category->image)) {
-                Storage::disk('public')->delete($category->image);
+            if ($category->image && File::exists(public_path('assets/images/category/'.$category->image))) {
+                 File::delete(public_path('assets/images/brand/'.$brand->image));
             }
-            $image = $request->file('image');
-            $imageName = time() . '_' . Str::slug($image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('assets/images', $imageName, 'public');
-            $data['image'] = $imagePath;
+            
+             $imageName = time().'_'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('assets/images/brand'), $imageName);
+            $brand->image = $imageName;
         }
 
-        $category->update($data);
+        // $category->update($data);
+
+         $category->name = $request->name;
+        $category->slug = Str::slug($request->slug);
+        $category->save();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
@@ -104,10 +110,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // Delete image if exists
-        if ($category->image && Storage::disk('public')->exists($category->image)) {
-            Storage::disk('public')->delete($category->image);
+         $category = Brand::findOrFail($id);
+
+        // Delete image
+        if ($category->image && File::exists(public_path('assets/images/category/'.$category->image))) {
+            File::delete(public_path('assets/images/category/'.$category->image));
         }
+
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }

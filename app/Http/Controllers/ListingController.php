@@ -51,7 +51,7 @@ class ListingController extends Controller
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'model_id' => 'required|exists:models,id',
+            'model_id' => 'required|exists:carmodels,id',
             'years_id' => 'required|exists:years,id',
             'fuel_type_id' => 'required|exists:fuel_types,id',
             'transmission_type_id' => 'required|exists:transmission_types,id',
@@ -151,7 +151,7 @@ class ListingController extends Controller
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'model_id' => 'required|exists:models,id',
+            'model_id' => 'required|exists:carmodels,id',
             'years_id' => 'required|exists:years,id',
             'fuel_type_id' => 'required|exists:fuel_types,id',
             'transmission_type_id' => 'required|exists:transmission_types,id',
@@ -189,10 +189,11 @@ class ListingController extends Controller
                 $file->move(public_path('assets/images/listings'), $filename);
 
                 ListingMedia::create([
-                    'listing_id' => $listing->id,
-                    'type' => $type,
-                    'file' => $filename,
-                ]);
+                'listing_id' => $listing->id,
+                'type' => $type,
+                'file_path' => $type === 'image' ? $filename : null,
+                'video_url' => $type === 'video' ? $videoUrl : null, // set $videoUrl if uploaded
+            ]);
             }
         }
 

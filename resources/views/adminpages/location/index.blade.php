@@ -19,7 +19,7 @@
         <table class="min-w-full border border-gray-200">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-4 py-2 border-b text-left">#</th>
+                    <th class="px-4 py-2 border-b text-left">Id</th>
                     <th class="px-4 py-2 border-b text-left">Name</th>
                     <th class="px-4 py-2 border-b text-left">Slug</th>
                     <th class="px-4 py-2 border-b text-left">Actions</th>

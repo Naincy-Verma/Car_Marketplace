@@ -35,7 +35,11 @@ class LocationController extends Controller
             'slug' => 'required|string|max:255|unique:locations,slug',
         ]);
 
-        Location::create($request->all());
+        // Explicitly assign name and slug
+    Location::create([
+        'name' => $request->name,
+        'slug' => $request->slug,
+    ]);
 
         return redirect()->route('location.index')->with('success', 'Location created successfully.');
     }
