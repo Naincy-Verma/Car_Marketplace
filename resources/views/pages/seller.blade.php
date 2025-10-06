@@ -86,22 +86,37 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="text-white hover:text-emerald-400 transition-colors font-medium">Home</a>
-                    <a href="index.html#listings" class="text-white hover:text-emerald-400 transition-colors font-medium">Browse Cars</a>
-                    <a href="index.html#categories" class="text-white hover:text-emerald-400 transition-colors font-medium">Categories</a>
-                    <a href="index.html#featured" class="text-white hover:text-emerald-400 transition-colors font-medium">Featured</a>
-                    <a href="index.html#contact" class="text-white hover:text-emerald-400 transition-colors font-medium">Contact</a>
+                    <a href="{{ route('home') }}" class="text-white hover:text-emerald-400 transition-colors font-medium">Home</a>
+                    <a href="/car/listing" class="text-white hover:text-emerald-400 transition-colors font-medium">Browse Cars</a>
+                    <a href="/car/listing" class="text-white hover:text-emerald-400 transition-colors font-medium">Categories</a>
+                    <a href="#contact" class="text-white hover:text-emerald-400 transition-colors font-medium">Contact</a>
                 </div>
 
                 <!-- Right Side Actions -->
                 <div class="flex items-center space-x-4">
-                    <a href="dashboard.html" class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
-                        <i class="fas fa-user mr-2"></i>
-                        Dashboard
-                    </a>
-                    <a href="/car/post-car" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
-                        Post Car
-                    </a>
+                    @auth
+                        <a href="{{ route('user.dashboard') }}" class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
+                            <i class="fas fa-user mr-2"></i>
+                            Dashboard
+                        </a>
+                        <a href="{{ route('user.post-car') }}" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
+                            Post Car
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="text-white hover:text-emerald-400 transition-colors font-medium">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
+                            <i class="fas fa-user mr-2"></i>
+                            Login
+                        </a>
+                        <a href="{{ route('register') }}" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
+                            Register
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -111,6 +126,12 @@
     <section class="min-h-screen pt-24 pb-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-gray-800 mb-8 animate-slide-in-left">Seller Dashboard</h2>
+
+            @if (session('success'))
+                <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <!-- Profile Section -->
             <div class="dashboard-card bg-white rounded-2xl shadow-lg p-8 mb-8 animate-fade-in-up">
@@ -126,27 +147,27 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <p class="text-sm text-gray-600">Name</p>
-                        <p class="font-semibold text-gray-800">John Doe</p>
+                        <p class="font-semibold text-gray-800">{{ Auth::user()->name }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">User Type</p>
-                        <p class="font-semibold text-gray-800">Individual</p>
+                        <p class="font-semibold text-gray-800">{{ Auth::user()->user_type }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Business Name (if applicable)</p>
-                        <p class="font-semibold text-gray-800">N/A</p>
+                        <p class="font-semibold text-gray-800">{{ Auth::user()->business_name ?: 'N/A' }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Email</p>
-                        <p class="font-semibold text-gray-800">john.doe@example.com</p>
+                        <p class="font-semibold text-gray-800">{{ Auth::user()->email }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">WhatsApp Number</p>
-                        <p class="font-semibold text-gray-800">+91 98765 43210</p>
+                        <p class="font-semibold text-gray-800">{{ Auth::user()->whatsapp_no ?: 'Not provided' }}</p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-600">Telegram Number</p>
-                        <p class="font-semibold text-gray-800">+91 98765 43211</p>
+                        <p class="text-sm text-gray-600">Telegram Username</p>
+                        <p class="font-semibold text-gray-800">{{ Auth::user()->telegram_username ?: 'Not provided' }}</p>
                     </div>
                 </div>
                 <div class="mt-6">
@@ -161,63 +182,72 @@
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-2xl font-bold text-gray-800 flex items-center">
                         <i class="fas fa-car text-emerald-400 mr-3"></i>
-                        My Car Listings
+                        My Car Listings ({{ $userListings->count() }})
                     </h3>
-                    <a href="/car/post-car" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
+                    <a href="{{ route('user.post-car') }}" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
                         Post New Car
                     </a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Listing 1 -->
-                    <div class="listing-card bg-gray-50 rounded-xl overflow-hidden shadow-md">
-                        <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=600&h=400&q=80" 
-                             alt="BMW M4" 
-                             class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-3">
-                                <h4 class="text-lg font-bold text-gray-800">BMW M4 Competition</h4>
-                                <span class="text-xl font-bold text-emerald-500">₹45.5L</span>
-                            </div>
-                            <p class="text-gray-600 text-sm mb-2">Status: <span class="text-green-600">Active</span></p>
-                            <p class="text-gray-600 text-sm mb-4 flex items-center">
-                                <i class="fas fa-map-marker-alt mr-2 text-emerald-400"></i>
-                                Mumbai, Maharashtra
-                            </p>
-                            <div class="flex gap-2">
-                                <button class="flex-1 bg-emerald-400 text-white py-2 rounded-lg hover:bg-emerald-500 transition font-semibold">
-                                    Edit
-                                </button>
-                                <button class="flex-1 bg-red-400 text-white py-2 rounded-lg hover:bg-red-500 transition font-semibold">
-                                    Delete
-                                </button>
+                    @forelse($userListings as $listing)
+                        <div class="listing-card bg-gray-50 rounded-xl overflow-hidden shadow-md">
+                            @if($listing->media->where('type', 'image')->first())
+                                <img src="{{ asset('assets/images/listings/' . $listing->media->where('type', 'image')->first()->file) }}" 
+                                     alt="{{ $listing->brand->name }} {{ $listing->model->name }}" 
+                                     class="w-full h-48 object-cover">
+                            @else
+                                <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
+                                    <i class="fas fa-car text-gray-500 text-4xl"></i>
+                                </div>
+                            @endif
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h4 class="text-lg font-bold text-gray-800">{{ $listing->brand->name }} {{ $listing->model->name }}</h4>
+                                    <span class="text-xl font-bold text-emerald-500">₹{{ number_format($listing->price) }}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    Status: 
+                                    <span class="
+                                        @if($listing->status === 'active') text-green-600
+                                        @elseif($listing->status === 'pending') text-yellow-600
+                                        @else text-red-600
+                                        @endif
+                                    ">
+                                        {{ ucfirst($listing->status) }}
+                                    </span>
+                                </p>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    <i class="fas fa-calendar mr-2 text-emerald-400"></i>
+                                    {{ $listing->year->year }}
+                                </p>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    <i class="fas fa-tachometer-alt mr-2 text-emerald-400"></i>
+                                    {{ $listing->mileage }} km
+                                </p>
+                                <p class="text-gray-600 text-sm mb-4 flex items-center">
+                                    <i class="fas fa-map-marker-alt mr-2 text-emerald-400"></i>
+                                    {{ $listing->location->name }}
+                                </p>
+                                <div class="flex gap-2">
+                                    <button class="flex-1 bg-emerald-400 text-white py-2 rounded-lg hover:bg-emerald-500 transition font-semibold">
+                                        Edit
+                                    </button>
+                                    <button class="flex-1 bg-red-400 text-white py-2 rounded-lg hover:bg-red-500 transition font-semibold">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Listing 2 -->
-                    <div class="listing-card bg-gray-50 rounded-xl overflow-hidden shadow-md">
-                        <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&h=400&q=80" 
-                             alt="Mercedes C-Class" 
-                             class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-3">
-                                <h4 class="text-lg font-bold text-gray-800">Mercedes C-Class</h4>
-                                <span class="text-xl font-bold text-emerald-500">₹38.2L</span>
-                            </div>
-                            <p class="text-gray-600 text-sm mb-2">Status: <span class="text-yellow-600">Pending Approval</span></p>
-                            <p class="text-gray-600 text-sm mb-4 flex items-center">
-                                <i class="fas fa-map-marker-alt mr-2 text-emerald-400"></i>
-                                Delhi NCR
-                            </p>
-                            <div class="flex gap-2">
-                                <button class="flex-1 bg-emerald-400 text-white py-2 rounded-lg hover:bg-emerald-500 transition font-semibold">
-                                    Edit
-                                </button>
-                                <button class="flex-1 bg-red-400 text-white py-2 rounded-lg hover:bg-red-500 transition font-semibold">
-                                    Delete
-                                </button>
-                            </div>
+                    @empty
+                        <div class="col-span-full text-center py-12">
+                            <i class="fas fa-car text-gray-400 text-6xl mb-4"></i>
+                            <h3 class="text-xl font-semibold text-gray-600 mb-2">No Listings Yet</h3>
+                            <p class="text-gray-500 mb-6">Start by posting your first car listing!</p>
+                            <a href="{{ route('user.post-car') }}" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
+                                Post Your First Car
+                            </a>
                         </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 

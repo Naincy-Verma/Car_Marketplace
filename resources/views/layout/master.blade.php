@@ -88,53 +88,41 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-8">
-                    <div class="relative dropdown">
-                        <a href="#" class="text-white hover:text-emerald-400 transition-colors flex items-center">
-                            Home
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                    <a href="#" class="text-white hover:text-emerald-400 transition-colors">About</a>
-                    <div class="relative dropdown">
-                        <a href="#" class="text-white hover:text-emerald-400 transition-colors flex items-center">
-                            Listings
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="relative dropdown">
-                        <a href="#" class="text-white hover:text-emerald-400 transition-colors flex items-center">
-                            Pages
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="relative dropdown">
-                        <a href="#" class="text-white hover:text-emerald-400 transition-colors flex items-center">
-                            Blog
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                    <a href="#" class="text-white hover:text-emerald-400 transition-colors">Contact</a>
+                    <a href="{{ route('home') }}" class="text-white hover:text-emerald-400 transition-colors font-medium">Home</a>
+                    <a href="/car/listing" class="text-white hover:text-emerald-400 transition-colors font-medium">Browse Cars</a>
+                    <a href="/car/listing" class="text-white hover:text-emerald-400 transition-colors font-medium">Categories</a>
+                    <a href="#contact" class="text-white hover:text-emerald-400 transition-colors font-medium">Contact</a>
                 </div>
 
                 <!-- Right Side Actions -->
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="text-white hover:text-emerald-400 transition-colors flex items-center">
-                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                        Sign up
-                    </a>
-                    <a href="#" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded transition-colors">
-                        Get inquiry
-                    </a>
+                    @auth
+                        <a href="{{ route('user.dashboard') }}"
+                            class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
+                            <i class="fas fa-user mr-2"></i>
+                            Dashboard
+                        </a>
+                        <a href="{{ route('user.post-car') }}"
+                            class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded transition-colors font-semibold">
+                            Sell Car
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="text-white hover:text-emerald-400 transition-colors font-medium">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
+                            <i class="fas fa-user mr-2"></i>
+                            Login
+                        </a>
+                        <a href="{{ route('register') }}"
+                            class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded transition-colors font-semibold">
+                            Register
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>

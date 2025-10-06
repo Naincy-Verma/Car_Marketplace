@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -31,11 +33,21 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
         ]);
 
-        Category::create($request->all());
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name); // Generate slug from name
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . Str::slug($image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('assets/images', $imageName, 'public');
+            $data['image'] = $imagePath;
+        }
+
+        Category::create($data);
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
@@ -63,11 +75,26 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image optional on update
             'status' => 'required|in:active,inactive',
         ]);
 
-        $category->update($request->all());
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name); // Regenerate slug
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image && Storage::disk('public')->exists($category->image)) {
+                Storage::disk('public')->delete($category->image);
+            }
+            $image = $request->file('image');
+            $imageName = time() . '_' . Str::slug($image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('assets/images', $imageName, 'public');
+            $data['image'] = $imagePath;
+        }
+
+        $category->update($data);
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
@@ -77,7 +104,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-         $category->delete();
+        // Delete image if exists
+        if ($category->image && Storage::disk('public')->exists($category->image)) {
+            Storage::disk('public')->delete($category->image);
+        }
+        $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 }

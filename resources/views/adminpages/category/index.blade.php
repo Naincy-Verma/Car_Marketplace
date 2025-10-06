@@ -26,7 +26,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2 border-b">{{ $index + 1 }}</td>
                         <td class="px-4 py-2 border-b">
-                            <img src="{{ asset('assets/images/category/' . $category->image) }}" alt="Category Image" class="w-12 h-12 object-cover rounded">
+                            <img src="{{ asset('storage/' . $category->image) }}" alt="Category Image" class="w-12 h-12 object-cover rounded">
                         </td>
                         <td class="px-4 py-2 border-b">{{ $category->name }}</td>
                         <td class="px-4 py-2 border-b text-gray-600">{{ $category->slug }}</td>

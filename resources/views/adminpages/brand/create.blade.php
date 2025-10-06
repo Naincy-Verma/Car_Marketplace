@@ -23,6 +23,12 @@
         </div>
 
         <div class="mb-4">
+            <label class="block font-semibold text-gray-700 mb-2">Brand Slug</label>
+            <input type="text" name="slug" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400" placeholder="Enter brand slug (e.g., toyota, honda)" required>
+            <p class="text-sm text-gray-500 mt-1">Slug will be used in URLs. Use lowercase letters and hyphens only.</p>
+        </div>
+
+        <div class="mb-4">
             <label class="block font-semibold text-gray-700 mb-2">Brand Image</label>
             <input type="file" name="image" accept="image/*" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400" required>
         </div>

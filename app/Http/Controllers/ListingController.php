@@ -12,6 +12,7 @@ use App\Models\FuelType;
 use App\Models\TransmissionType;
 use App\Models\Location;
 use App\Models\ListingMedia;
+use Illuminate\Support\Facades\Auth;
 
 class ListingController extends Controller
 {
@@ -123,5 +124,91 @@ class ListingController extends Controller
     {
         $listing->update(['status' => 'rejected']);
         return back()->with('success', 'Listing rejected.');
+    }
+
+    /**
+     * Show form to create new listing for users
+     */
+    public function createUserListing()
+    {
+        // Pass categories, brands, models etc. to the view
+        return view('pages.post-car', [
+            'categories' => Category::all(),
+            'brands' => Brand::all(),
+            'models' => CarModel::all(),
+            'years' => Year::all(),
+            'fuel_types' => FuelType::all(),
+            'transmissions' => TransmissionType::all(),
+            'locations' => Location::all(),
+        ]);
+    }
+
+    /**
+     * Store a new listing for users
+     */
+    public function storeUserListing(Request $request)
+    {
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
+            'model_id' => 'required|exists:models,id',
+            'years_id' => 'required|exists:years,id',
+            'fuel_type_id' => 'required|exists:fuel_types,id',
+            'transmission_type_id' => 'required|exists:transmission_types,id',
+            'location_id' => 'required|exists:locations,id',
+            'mileage' => 'required|string',
+            'price' => 'required|numeric',
+            'condition' => 'required|in:new,used',
+            'description' => 'required|string',
+            'listing_type' => 'nullable|in:featured,urgent',
+            'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov|max:10240', // 10MB max
+        ]);
+
+        $listing = Listing::create([
+            'category_id' => $validated['category_id'],
+            'brand_id' => $validated['brand_id'],
+            'model_id' => $validated['model_id'],
+            'years_id' => $validated['years_id'],
+            'fuel_type_id' => $validated['fuel_type_id'],
+            'transmission_type_id' => $validated['transmission_type_id'],
+            'location_id' => $validated['location_id'],
+            'mileage' => $validated['mileage'],
+            'price' => $validated['price'],
+            'condition' => $validated['condition'],
+            'description' => $validated['description'],
+            'listing_type' => $validated['listing_type'] ?? 'featured',
+            'status' => 'pending', // all new listings are pending approval
+            'user_id' => Auth::id(), // Associate with logged-in user
+        ]);
+
+        // Handle uploaded media
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $file) {
+                $type = in_array($file->extension(), ['mp4', 'mov']) ? 'video' : 'image';
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('assets/images/listings'), $filename);
+
+                ListingMedia::create([
+                    'listing_id' => $listing->id,
+                    'type' => $type,
+                    'file' => $filename,
+                ]);
+            }
+        }
+
+        return redirect()->route('user.dashboard')->with('success', 'Your car listing has been submitted successfully and is pending approval!');
+    }
+
+    /**
+     * Show user dashboard with their listings
+     */
+    public function userDashboard()
+    {
+        $userListings = Listing::where('user_id', Auth::id())
+            ->with('media', 'category', 'brand', 'model', 'fuelType', 'transmissionType', 'location')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('pages.seller', compact('userListings'));
     }
 }

@@ -4,7 +4,24 @@
 <div class="p-6 max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold mb-6 text-gray-800">Add New Category</h1>
 
+<!-- Display Success Message (if redirected back with success) -->
+@if (session('success'))
+<div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg flex items-center">
+    <i class="fas fa-check-circle mr-2"></i>
+    {{ session('success') }}
+</div>
+@endif
 
+<!-- Display Validation Errors -->
+@if ($errors->any())
+<div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+    <ul class="list-disc list-inside">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
     <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow">
         @csrf
 

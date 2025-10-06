@@ -76,22 +76,37 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="text-white hover:text-emerald-400 transition-colors font-medium">Home</a>
-                    <a href="index.html#listings" class="text-white hover:text-emerald-400 transition-colors font-medium">Browse Cars</a>
-                    <a href="index.html#categories" class="text-white hover:text-emerald-400 transition-colors font-medium">Categories</a>
-                    <a href="index.html#featured" class="text-white hover:text-emerald-400 transition-colors font-medium">Featured</a>
-                    <a href="index.html#contact" class="text-white hover:text-emerald-400 transition-colors font-medium">Contact</a>
+                    <a href="{{ route('home') }}" class="text-white hover:text-emerald-400 transition-colors font-medium">Home</a>
+                    <a href="/car/listing" class="text-white hover:text-emerald-400 transition-colors font-medium">Browse Cars</a>
+                    <a href="/car/listing" class="text-white hover:text-emerald-400 transition-colors font-medium">Categories</a>
+                    <a href="#contact" class="text-white hover:text-emerald-400 transition-colors font-medium">Contact</a>
                 </div>
 
                 <!-- Right Side Actions -->
                 <div class="flex items-center space-x-4">
-                    <a href="dashboard.html" class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
-                        <i class="fas fa-user mr-2"></i>
-                        Dashboard
-                    </a>
-                    <a href="post-car.html" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
-                        Post Car
-                    </a>
+                    @auth
+                        <a href="{{ route('user.dashboard') }}" class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
+                            <i class="fas fa-user mr-2"></i>
+                            Dashboard
+                        </a>
+                        <a href="{{ route('user.post-car') }}" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
+                            Post Car
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="text-white hover:text-emerald-400 transition-colors font-medium">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="hidden md:flex text-white hover:text-emerald-400 transition-colors items-center font-medium">
+                            <i class="fas fa-user mr-2"></i>
+                            Login
+                        </a>
+                        <a href="{{ route('register') }}" class="bg-emerald-400 hover:bg-emerald-500 text-white px-6 py-2 rounded-full transition-colors font-semibold">
+                            Register
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -101,8 +116,26 @@
     <section class="min-h-screen pt-24 pb-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-gray-800 mb-8 animate-slide-in-left">Post a New Car</h2>
+            
+            @if (session('success'))
+                <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="form-container bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up">
-                <form>
+                <form action="{{ route('user.post-car.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                         <!-- Category -->
                         <div>
@@ -112,16 +145,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-car absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="category_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                                     <option value="">Select Category</option>
-                                    <option>SUV</option>
-                                    <option>Sedan</option>
-                                    <option>Hatchback</option>
-                                    <option>Coupe</option>
-                                    <option>Convertible</option>
-                                    <option>Truck</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
+                            @error('category_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Brand -->
@@ -132,16 +163,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-copyright absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="brand_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                                     <option value="">Select Brand</option>
-                                    <option>Toyota</option>
-                                    <option>Honda</option>
-                                    <option>BMW</option>
-                                    <option>Mercedes</option>
-                                    <option>Audi</option>
-                                    <option>Hyundai</option>
+                                    @foreach($brands as $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
+                            @error('brand_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Model -->
@@ -152,8 +181,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-car-side absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Enter Model" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="model_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                    <option value="">Select Model</option>
+                                    @foreach($models as $model)
+                                        <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+                            @error('model_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Year -->
@@ -164,15 +199,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="years_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                                     <option value="">Select Year</option>
-                                    <option>2024</option>
-                                    <option>2023</option>
-                                    <option>2022</option>
-                                    <option>2021</option>
-                                    <option>2020</option>
+                                    @foreach($years as $year)
+                                        <option value="{{ $year->id }}">{{ $year->year }}</option>
+                                    @endforeach
                                 </select>
                             </div>
+                            @error('years_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Price -->
@@ -183,8 +217,9 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-dollar-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="number" placeholder="Enter Price" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <input type="number" name="price" placeholder="Enter Price" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                             </div>
+                            @error('price')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Mileage -->
@@ -195,8 +230,9 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-tachometer-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="number" placeholder="Enter Mileage" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <input type="text" name="mileage" placeholder="Enter Mileage" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                             </div>
+                            @error('mileage')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Location -->
@@ -207,8 +243,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Enter Location" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="location_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                    <option value="">Select Location</option>
+                                    @foreach($locations as $location)
+                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+                            @error('location_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Fuel Type -->
@@ -219,15 +261,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-gas-pump absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="fuel_type_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                                     <option value="">Select Fuel Type</option>
-                                    <option>Petrol</option>
-                                    <option>Diesel</option>
-                                    <option>Electric</option>
-                                    <option>Hybrid</option>
-                                    <option>CNG</option>
+                                    @foreach($fuel_types as $fuel_type)
+                                        <option value="{{ $fuel_type->id }}">{{ $fuel_type->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
+                            @error('fuel_type_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Transmission -->
@@ -238,12 +279,14 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-cogs absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="transmission_type_id" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                                     <option value="">Select Transmission</option>
-                                    <option>Automatic</option>
-                                    <option>Manual</option>
+                                    @foreach($transmissions as $transmission)
+                                        <option value="{{ $transmission->id }}">{{ $transmission->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
+                            @error('transmission_type_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Condition -->
@@ -254,36 +297,29 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-car-crash absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <select name="condition" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
                                     <option value="">Select Condition</option>
-                                    <option>New</option>
-                                    <option>Used</option>
+                                    <option value="new">New</option>
+                                    <option value="used">Used</option>
                                 </select>
                             </div>
+                            @error('condition')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
 
-                        <!-- WhatsApp Number -->
+                        <!-- Listing Type -->
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fab fa-whatsapp mr-2 text-emerald-400"></i>
-                                WhatsApp Number
+                                <i class="fas fa-star mr-2 text-emerald-400"></i>
+                                Listing Type
                             </label>
                             <div class="relative">
-                                <i class="fab fa-whatsapp absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="tel" placeholder="Enter WhatsApp Number" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
+                                <i class="fas fa-star absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <select name="listing_type" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50">
+                                    <option value="featured">Featured</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
                             </div>
-                        </div>
-
-                        <!-- Telegram Number -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fab fa-telegram mr-2 text-emerald-400"></i>
-                                Telegram Number
-                            </label>
-                            <div class="relative">
-                                <i class="fab fa-telegram absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <input type="tel" placeholder="Enter Telegram Number" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" required>
-                            </div>
+                            @error('listing_type')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                         </div>
                     </div>
 
@@ -293,7 +329,8 @@
                             <i class="fas fa-file-alt mr-2 text-emerald-400"></i>
                             Description
                         </label>
-                        <textarea placeholder="Enter Car Description" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" rows="5"></textarea>
+                        <textarea name="description" placeholder="Enter Car Description" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50" rows="5" required></textarea>
+                        @error('description')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                     </div>
 
                     <!-- Photos/Videos -->
@@ -302,16 +339,9 @@
                             <i class="fas fa-camera mr-2 text-emerald-400"></i>
                             Photos/Videos
                         </label>
-                        <input type="file" accept="image/*,video/*" multiple class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50">
-                        <p class="text-sm text-gray-600 mt-2">Upload up to 10 photos or videos</p>
-                    </div>
-
-                    <!-- Featured/Urgent -->
-                    <div class="mb-6">
-                        <label class="flex items-center text-sm font-semibold text-gray-700">
-                            <input type="checkbox" class="mr-2 accent-emerald-400">
-                            Mark as Featured/Urgent (Premium Feature)
-                        </label>
+                        <input type="file" name="media[]" accept="image/*,video/*" multiple class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-gray-50">
+                        <p class="text-sm text-gray-600 mt-2">Upload up to 10 photos or videos (Max 10MB each)</p>
+                        @error('media.*')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                     </div>
 
                     <!-- Submit Button -->

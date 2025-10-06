@@ -23,7 +23,7 @@ class ModelController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:models,slug',
+            'slug' => 'required|string|max:255',
         ]);
 
         CarModel::create($request->all());

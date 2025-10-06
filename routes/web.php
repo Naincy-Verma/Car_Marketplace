@@ -19,14 +19,20 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // Route::view('/','pages.index');
-Route::view('/', 'pages.index2');
+Route::view('/', 'pages.index2')->name('home');
 Route::view('/car/login', 'pages.login');
 Route::view('/car/dashboard', 'pages.seller');
-Route::view('/car/post-car', 'pages.post-car');
 Route::view('/car/profile', 'pages.edit-profile');
 Route::view('/car/search', 'pages.car-search');
 Route::view('/car/listing', 'pages.car-listing');
 Route::view('/car/detail', 'pages.car-detail');
+
+// User post car routes (protected)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/car/post-car', [ListingController::class, 'createUserListing'])->name('user.post-car');
+    Route::post('/car/post-car', [ListingController::class, 'storeUserListing'])->name('user.post-car.store');
+    Route::get('/car/dashboard', [ListingController::class, 'userDashboard'])->name('user.dashboard');
+});
 
 // Route::view('login','adminpages.login');
 
